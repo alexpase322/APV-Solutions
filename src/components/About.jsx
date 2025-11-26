@@ -100,6 +100,7 @@ const About = () => {
             <span className="text-xl font-bold text-white">Java</span>
             <span className="text-xl font-bold text-white">Angular</span>
             <span className="text-xl font-bold text-white">Power BI</span>
+            <span className="text-xl font-bold text-white">Glide</span>
           </div>
         </div>
 
