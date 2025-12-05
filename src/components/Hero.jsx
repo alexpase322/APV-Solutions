@@ -27,12 +27,18 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 bg-[#263646] text-white rounded-lg font-semibold hover:bg-[#1a2530] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <a 
+                href="#contact" 
+                className="px-8 py-4 bg-[#263646] text-white rounded-lg font-semibold hover:bg-[#1a2530] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
                 Start Your Project <ArrowRight size={20} />
-              </button>
-              <button className="px-8 py-4 bg-white text-[#263646] border border-gray-200 rounded-lg font-semibold hover:border-[#94A378] hover:text-[#94A378] transition-all">
+              </a>
+              <a 
+                href="#services" 
+                className="px-8 py-4 bg-white text-[#263646] border border-gray-200 rounded-lg font-semibold hover:border-[#94A378] hover:text-[#94A378] transition-all flex items-center justify-center"
+              >
                 View Our Services
-              </button>
+              </a>
             </div>
           </div>
 

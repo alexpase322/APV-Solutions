@@ -50,9 +50,9 @@ const ServiceCard = ({ icon, title, description, features }) => (
       ))}
     </div>
 
-    <button className="flex items-center gap-2 text-[#263646] font-semibold text-sm group-hover:gap-3 transition-all">
+    <a href="/services" className="flex items-center gap-2 text-[#263646] font-semibold text-sm group-hover:gap-3 transition-all">
       Learn more <ArrowRight size={16} className="text-[#94A378]" />
-    </button>
+    </a>
   </div>
 );
 
