@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite *)",
+      "WebFetch(domain:jornixs.com)",
+      "WebFetch(domain:apvnexus.com)",
+      "WebFetch(domain:www.apvnexus.com)"
+    ]
+  }
+}

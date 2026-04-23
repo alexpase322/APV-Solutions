@@ -1,5 +1,6 @@
 import React from 'react';
 import { Target, Users, Zap, Award, Check, Linkedin, Github } from 'lucide-react';
+import fotoPa from '../assets/foto-pa.jpeg';
 
 const About = () => {
   return (
@@ -105,9 +106,8 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Miembro 1 */}
             <div className="bg-[#1e2b38] rounded-xl p-6 text-center border border-gray-700 hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-24 h-24 bg-gray-500 rounded-full mx-auto mb-4 overflow-hidden">
-                 {/* Aquí iría la foto real */}
-                 <img src="" alt="CEO" className="w-full h-full object-cover" />
+              <div className="w-24 h-24 bg-gradient-to-br from-[#94A378] to-[#263646] rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center">
+                 <span className="text-white text-2xl font-bold">AP</span>
               </div>
               <h3 className="text-xl font-bold text-white">Alex Pastrana.</h3>
               <p className="text-[#94A378] text-sm mb-4">CoFounder & Lead Developer</p>
@@ -120,7 +120,7 @@ const About = () => {
             {/* Miembro 2 */}
             <div className="bg-[#1e2b38] rounded-xl p-6 text-center border border-gray-700 hover:-translate-y-2 transition-transform duration-300">
               <div className="w-24 h-24 bg-gray-500 rounded-full mx-auto mb-4 overflow-hidden">
-                 <img src="/src/assets/Foto pa.jpeg" alt="CTO" className="w-full h-full object-cover" />
+                 <img src={fotoPa} alt="Alexander Pastrana Villamil" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-xl font-bold text-white">Alexander Pastrana Villamil.</h3>
               <p className="text-[#94A378] text-sm mb-4">CoFounder & Chief Financial & Administrative Officer (CFAO) – Power BI Specialist</p>

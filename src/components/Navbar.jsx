@@ -57,8 +57,15 @@ const Navbar = () => {
               Services
             </Link>
 
-            <Link 
-              to="/about" 
+            <Link
+              to="/portfolio"
+              className={`font-medium transition-colors ${isActive('/portfolio') ? 'text-[#94A378] font-bold' : 'text-[#4B5563] hover:text-[#94A378]'}`}
+            >
+              Portfolio
+            </Link>
+
+            <Link
+              to="/about"
               className={`font-medium transition-colors ${isActive('/about') ? 'text-[#94A378] font-bold' : 'text-[#4B5563] hover:text-[#94A378]'}`}
             >
               About Us
@@ -109,9 +116,17 @@ const Navbar = () => {
                   Services
                 </Link>
 
-                <Link 
-                  to="/about" 
-                  onClick={closeMenu} 
+                <Link
+                  to="/portfolio"
+                  onClick={closeMenu}
+                  className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/portfolio') ? 'bg-[#94A378]/10 text-[#94A378]' : 'text-[#4B5563] hover:bg-gray-50'}`}
+                >
+                  Portfolio
+                </Link>
+
+                <Link
+                  to="/about"
+                  onClick={closeMenu}
                   className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/about') ? 'bg-[#94A378]/10 text-[#94A378]' : 'text-[#4B5563] hover:bg-gray-50'}`}
                 >
                   About Us
