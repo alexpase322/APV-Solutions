@@ -1,5 +1,6 @@
 import React from 'react';
 import { Code2, Workflow, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // 1. Datos de los servicios (Separados de la vista para mantener el orden)
 const servicesData = [
@@ -50,9 +51,9 @@ const ServiceCard = ({ icon, title, description, features }) => (
       ))}
     </div>
 
-    <a href="/services" className="flex items-center gap-2 text-[#263646] font-semibold text-sm group-hover:gap-3 transition-all">
+    <Link to="/services" className="flex items-center gap-2 text-[#263646] font-semibold text-sm group-hover:gap-3 transition-all">
       Learn more <ArrowRight size={16} className="text-[#94A378]" />
-    </a>
+    </Link>
   </div>
 );
 
