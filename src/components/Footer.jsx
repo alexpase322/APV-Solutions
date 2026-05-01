@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, Facebook, Instagram } from 'lucide-react';
+import { BarChart3, Facebook, Instagram, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // TikTok icon (lucide-react does not include it natively)
@@ -77,6 +77,14 @@ const Footer = () => {
           <p className="text-gray-500 text-xs">
             © {new Date().getFullYear()} APV Business Solutions LLC. All rights reserved.
           </p>
+
+          <Link
+            to="/legal"
+            className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-[#E4B34C] transition-colors border border-gray-700 hover:border-[#E4B34C] px-4 py-2 rounded-lg"
+          >
+            <FileText size={14} aria-hidden="true" />
+            Legal · Terms & Privacy
+          </Link>
 
           <div className="flex gap-4">
             <a

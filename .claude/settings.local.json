@@ -4,7 +4,13 @@
       "Bash(npx vite *)",
       "WebFetch(domain:jornixs.com)",
       "WebFetch(domain:apvnexus.com)",
-      "WebFetch(domain:www.apvnexus.com)"
+      "WebFetch(domain:www.apvnexus.com)",
+      "Read(//tmp/**)",
+      "Read(//tmp/APV_Terms_of_Service_EN/word/**)",
+      "Bash(cp -r /tmp/APV_Terms_of_Service_EN /tmp/APV_Privacy_Policy_EN /tmp/APV_Terminos_de_Servicio_ES /tmp/APV_Politica_de_Privacidad_ES \"C:/tmp-docx/\")",
+      "Bash(mkdir -p \"C:/tmp-docx\")",
+      "Bash(cp -r /tmp/APV_* \"C:/tmp-docx/\")",
+      "Read(//c//**)"
     ]
   }
 }
