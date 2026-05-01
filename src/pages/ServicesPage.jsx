@@ -4,8 +4,15 @@ import Footer from '../components/Footer';
 import WhatsAppBtn from '../components/WhatsAppBtn';
 import { Code2, Workflow, BarChart3, CheckCircle2, ArrowRight, Database, Cloud, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import useSeo from '../hooks/useSeo';
 
 const ServicesPage = () => {
+  useSeo({
+    title: 'Services — Custom Software, No-Code Automation & BI Dashboards',
+    description: 'End-to-end digital services: custom web/mobile apps with React & Python, no-code automation with n8n, and Power BI dashboards that turn data into decisions.',
+    path: '/services',
+  });
+
   // Hacer scroll al inicio al cargar la página
   useEffect(() => {
     window.scrollTo(0, 0);

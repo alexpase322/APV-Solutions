@@ -68,32 +68,32 @@ const Contact = () => {
 
           {/* FORMULARIO (Derecha) */}
           <div className="w-full lg:w-2/3 bg-[#F8F9FA] p-8 md:p-10 rounded-3xl border border-gray-100">
-            <form className="space-y-6" onSubmit={onSubmit}>
+            <form className="space-y-6" onSubmit={onSubmit} aria-label="Contact form">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#263646]">First Name</label>
-                  <input type="text" name='name' placeholder="John" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
+                  <label htmlFor="contact-first-name" className="text-sm font-medium text-[#263646]">First Name</label>
+                  <input id="contact-first-name" type="text" name="first_name" autoComplete="given-name" required placeholder="John" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#263646]">Last Name</label>
-                  <input type="text" name='last name' placeholder="Doe" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
+                  <label htmlFor="contact-last-name" className="text-sm font-medium text-[#263646]">Last Name</label>
+                  <input id="contact-last-name" type="text" name="last_name" autoComplete="family-name" required placeholder="Doe" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#263646]">Email Address</label>
-                <input type="email" name='email' placeholder="john@company.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
+                <label htmlFor="contact-email" className="text-sm font-medium text-[#263646]">Email Address</label>
+                <input id="contact-email" type="email" name="email" autoComplete="email" required placeholder="john@company.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white" />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#263646]">Message</label>
-                <textarea name='message' rows="4" placeholder="Tell us about your project..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white resize-none"></textarea>
+                <label htmlFor="contact-message" className="text-sm font-medium text-[#263646]">Message</label>
+                <textarea id="contact-message" name="message" rows="4" required placeholder="Tell us about your project..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all bg-white resize-none"></textarea>
               </div>
 
               <button type="submit" className="w-full bg-[#263646] text-white font-bold py-4 rounded-xl hover:bg-[#94A378] transition-colors flex justify-center items-center gap-2">
-                Send Message <Send size={18} />
+                Send Message <Send size={18} aria-hidden="true" />
               </button>
-              <p>{result}</p>
+              <p role="status" aria-live="polite">{result}</p>
             </form>
           </div>
 

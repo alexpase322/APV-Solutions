@@ -4,8 +4,15 @@ import Footer from '../components/Footer';
 import WhatsAppBtn from '../components/WhatsAppBtn';
 import { Target, Lightbulb, Users, Heart, ShieldCheck, Rocket, Linkedin, Github } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import useSeo from '../hooks/useSeo';
 
 const AboutPage = () => {
+  useSeo({
+    title: 'About Us — Strategic Technology Partners',
+    description: 'Meet the team behind APV Business Solutions. Our mission, values and the people building production software, automations and BI for SMBs in the US and LATAM.',
+    path: '/about',
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

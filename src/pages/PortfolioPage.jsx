@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppBtn from '../components/WhatsAppBtn';
 import { Link } from 'react-router-dom';
+import useSeo from '../hooks/useSeo';
 import {
   ExternalLink,
   Clock,
@@ -213,6 +214,12 @@ const iconMap = {
 };
 
 const PortfolioPage = () => {
+  useSeo({
+    title: 'Portfolio — Jornixs, APV ListingAI & APVNexus',
+    description: 'Explore the products we have shipped: Jornixs (payroll SaaS for 1099 contractors), APV ListingAI (AI listings for real estate) and APVNexus (AI-powered CRM).',
+    path: '/portfolio',
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

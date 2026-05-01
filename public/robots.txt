@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apvsolutions.tech/sitemap.xml
