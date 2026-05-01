@@ -98,7 +98,7 @@ const Footer = () => {
               <Instagram size={20} aria-hidden="true" />
             </a>
             <a
-              href="https://www.tiktok.com/@apoyo.hispanos"
+              href="https://www.tiktok.com/@apv.businesshub"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="APV Business Solutions on TikTok"
