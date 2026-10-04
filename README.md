@@ -2,7 +2,7 @@
 
 React + Vite + Tailwind. Company website plus the NFC digital cards app (sales page, public cards, client dashboard and super admin). Deployed on **Vercel**.
 
-The API lives in [`../server`](../server) (Express + MongoDB on Render).
+The API lives in its own repository, **APV-back** (Express + MongoDB, deployed on Render).
 
 ## Run locally
 
@@ -17,7 +17,11 @@ Other scripts: `npm run build`, `npm run preview`, `npm run lint`.
 
 ## Deploy (Vercel)
 
-Project Settings → General → **Root Directory** = `client`. Environment variable `VITE_API_URL` = the Render API URL (e.g. `https://apv-nfc-api.onrender.com`). `vercel.json` rewrites every route to `index.html` (SPA).
+- Framework preset **Vite**, Root Directory **empty** (the project is at the repo root).
+- Environment variable **`VITE_API_URL`** = the Render API URL (e.g. `https://apv-nfc-api.onrender.com`). The build stops with a clear error on Vercel if it's missing.
+- `vercel.json` rewrites every route to `index.html` (SPA).
+
+On the backend (Render), `CLIENT_URL` must include this site's domain(s) for CORS, and `PUBLIC_APP_URL` must be the domain used in NFC links (`https://apvsolutions.tech`).
 
 ## Routes
 
@@ -38,5 +42,5 @@ src/
   components/       website sections + nfc/ (card, editor, UI), auth/, icons/
   context/          AuthContext (session)
   lib/              api client, NFC helpers, legal texts
-  hooks/            useSeo, useNoIndex
+  hooks/            useSeo, useNoIndex, useCardTheme
 ```

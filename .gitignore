@@ -27,3 +27,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Backend lives in its own repository (APV-back). The local server/ folder is a separate git repo — never commit it here.
+/server/
+
+# Local tooling
+/.impeccable/
