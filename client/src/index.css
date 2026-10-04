@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Dark mode is opt-in per element (a digital card set to dark / auto at night), not site-wide */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Registered so the pill background can animate between its base and brand-tinted hover color */
+@property --pill-surface {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #ffffff;
+}
+
+/*
+ * Social / link pill with a brand-colored (or gradient) border.
+ * Set inline: --pill-base, --pill-hover (colors), --pill-border (an <image>, e.g. linear-gradient), --pill-glow.
+ */
+.link-pill {
+  --pill-surface: var(--pill-base);
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--pill-surface), var(--pill-surface)) padding-box,
+    var(--pill-border) border-box;
+  transition: --pill-surface 200ms ease, box-shadow 200ms ease, transform 150ms ease;
+}
+
+.link-pill:hover,
+.link-pill:focus-visible {
+  --pill-surface: var(--pill-hover);
+  box-shadow: 0 10px 24px -12px var(--pill-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-pill {
+    transition: none;
+  }
+}

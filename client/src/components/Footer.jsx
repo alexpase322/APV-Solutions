@@ -1,20 +1,7 @@
 import React from 'react';
 import { BarChart3, Facebook, Instagram, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-// TikTok icon (lucide-react does not include it natively)
-const TikTokIcon = ({ size = 20 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    aria-hidden="true"
-  >
-    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-6.16 11.61 6.85 6.85 0 0 0 11.69-4.84V8.27a8.16 8.16 0 0 0 4.77 1.52V6.36a4.85 4.85 0 0 1-1.07-.07Z" />
-  </svg>
-);
+import TikTokIcon from './icons/TikTokIcon';
 
 const Footer = () => {
   return (
@@ -55,6 +42,7 @@ const Footer = () => {
               <li><Link to="/" className="hover:text-[#94A378] transition-colors">Home</Link></li>
               <li><Link to="/services" className="hover:text-[#94A378] transition-colors">Services</Link></li>
               <li><Link to="/portfolio" className="hover:text-[#94A378] transition-colors">Portfolio</Link></li>
+              <li><Link to="/nfc" className="hover:text-[#94A378] transition-colors">NFC Cards</Link></li>
               <li><Link to="/about" className="hover:text-[#94A378] transition-colors">About Us</Link></li>
               <li><Link to="/#contact" className="hover:text-[#94A378] transition-colors">Contact</Link></li>
             </ul>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, BarChart3, ChevronRight } from 'lucide-react';
+import { Menu, X, BarChart3, ChevronRight, UserCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
@@ -41,7 +41,7 @@ const Navbar = () => {
           </Link>
 
           {/* --- DESKTOP MENU --- */}
-          <div className="hidden md:flex space-x-8 items-center">
+          <div className="hidden lg:flex space-x-8 items-center">
             
             <Link 
               to="/" 
@@ -65,10 +65,24 @@ const Navbar = () => {
             </Link>
 
             <Link
+              to="/nfc"
+              className={`font-medium transition-colors ${isActive('/nfc') ? 'text-[#94A378] font-bold' : 'text-[#4B5563] hover:text-[#94A378]'}`}
+            >
+              NFC Cards
+            </Link>
+
+            <Link
               to="/about"
               className={`font-medium transition-colors ${isActive('/about') ? 'text-[#94A378] font-bold' : 'text-[#4B5563] hover:text-[#94A378]'}`}
             >
               About Us
+            </Link>
+
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1.5 font-medium text-[#4B5563] hover:text-[#94A378] transition-colors"
+            >
+              <UserCircle size={18} aria-hidden="true" /> Log in
             </Link>
 
             {/* Botón CTA - Usa ancla con lógica */}
@@ -81,9 +95,11 @@ const Navbar = () => {
           </div>
 
           {/* --- MOBILE TOGGLE BUTTON --- */}
-          <div className="md:hidden flex items-center">
-            <button 
-              onClick={() => setIsOpen(!isOpen)} 
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
               className="text-[#263646] p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -125,11 +141,27 @@ const Navbar = () => {
                 </Link>
 
                 <Link
+                  to="/nfc"
+                  onClick={closeMenu}
+                  className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/nfc') ? 'bg-[#94A378]/10 text-[#94A378]' : 'text-[#4B5563] hover:bg-gray-50'}`}
+                >
+                  NFC Cards
+                </Link>
+
+                <Link
                   to="/about"
                   onClick={closeMenu}
                   className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/about') ? 'bg-[#94A378]/10 text-[#94A378]' : 'text-[#4B5563] hover:bg-gray-50'}`}
                 >
                   About Us
+                </Link>
+
+                <Link
+                  to="/login"
+                  onClick={closeMenu}
+                  className="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-[#4B5563] hover:bg-gray-50"
+                >
+                  <UserCircle size={20} aria-hidden="true" /> Log in
                 </Link>
 
                 <div className="border-t border-gray-100 my-2 pt-2">
