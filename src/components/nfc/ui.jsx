@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Check, Copy, Loader2 } from 'lucide-react';
-import { productById } from '../../lib/products';
+import { productById, productsOf } from '../../lib/products';
 
 export const inputClass =
   'w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-[#263646] placeholder:text-gray-400 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all';
@@ -102,16 +102,26 @@ export const ActionButton = ({ onClick, icon, children, danger, busy, disabled, 
   );
 };
 
-/** Small pill with the product icon + name (card, bracelet…). */
-export const ProductBadge = ({ type }) => {
+/** Small pill with the product icon + name (card, bracelet…), with the quantity when > 1. */
+export const ProductBadge = ({ type, qty = 1 }) => {
   const product = productById(type);
   return (
     <span className="inline-flex items-center gap-1 rounded-full bg-[#263646]/5 px-2 py-0.5 font-semibold text-[#263646]">
       <product.icon size={12} aria-hidden="true" />
+      {qty > 1 ? `${qty}× ` : ''}
       {product.short}
     </span>
   );
 };
+
+/** All the products of a client (they share the same NFC link). */
+export const ProductBadges = ({ card }) => (
+  <span className="inline-flex flex-wrap items-center gap-1" title="Products programmed with this link">
+    {productsOf(card).map((p) => (
+      <ProductBadge key={p.type} type={p.type} qty={p.qty} />
+    ))}
+  </span>
+);
 
 export const Pagination = ({ page, pages, onChange }) => {
   if (pages <= 1) return null;

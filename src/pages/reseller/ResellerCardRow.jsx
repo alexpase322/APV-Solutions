@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Eye, Mail, Pencil, Send } from 'lucide-react';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
-import { ActionButton, Alert, CopyButton, Field, ProductBadge, StatusBadge, inputClass, selectClass } from '../../components/nfc/ui';
+import { ActionButton, Alert, CopyButton, Field, ProductBadges, StatusBadge, inputClass, selectClass } from '../../components/nfc/ui';
+import ProductsEditor from '../../components/nfc/ProductsEditor';
 import InviteLinkBox from '../admin/InviteLinkBox';
 import { api } from '../../lib/api';
 import { cardPublicUrl, cardStatus, initials } from '../../lib/nfc';
@@ -68,7 +69,7 @@ const RequestChange = ({ card, onSent }) => {
   );
 };
 
-const ResellerCardRow = ({ card, onRequestSent }) => {
+const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
   const [open, setOpen] = useState(false);
   const [invite, setInvite] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -105,7 +106,7 @@ const ResellerCardRow = ({ card, onRequestSent }) => {
             <p className="font-semibold text-[#263646] truncate">{name}</p>
             <p className="text-sm text-gray-500 truncate">{card.owner?.email}</p>
             <p className="mt-1 text-xs">
-              <ProductBadge type={card.productType} />
+              <ProductBadges card={card} />
             </p>
           </div>
         </div>
@@ -145,6 +146,14 @@ const ResellerCardRow = ({ card, onRequestSent }) => {
         <div className="border-t border-gray-100 p-4 space-y-4">
           <Alert>{error}</Alert>
           <CardLinkBox url={url} code={card.code} title="NFC link to program" compact />
+          <ProductsEditor
+            card={card}
+            stock={stock}
+            onAdd={async (type, qty) => {
+              await api(`/api/reseller/cards/${card.id}/products`, { method: 'POST', body: { type, qty } });
+              onChanged?.(); // reloads the list + stock
+            }}
+          />
 
           {editable &&
             (invite ? (

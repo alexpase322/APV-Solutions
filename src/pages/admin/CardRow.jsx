@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Ban, ChevronDown, ChevronUp, Eye, Mail, Pencil, Power, Save, Store, Trash2, Unlock } from 'lucide-react';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
-import { ActionButton, Alert, CopyButton, ProductBadge, StatusBadge, inputClass } from '../../components/nfc/ui';
+import { ActionButton, Alert, CopyButton, ProductBadges, StatusBadge, inputClass } from '../../components/nfc/ui';
+import ProductsEditor from '../../components/nfc/ProductsEditor';
 import InviteLinkBox from './InviteLinkBox';
 import { api } from '../../lib/api';
 import { cardPublicUrl, cardStatus, initials } from '../../lib/nfc';
@@ -64,7 +65,7 @@ const CardRow = ({ card, onChange, onDeleted }) => {
             <p className="font-semibold text-[#263646] truncate">{name}</p>
             <p className="text-sm text-gray-500 truncate">{card.owner?.email}</p>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-              <ProductBadge type={card.productType} />
+              <ProductBadges card={card} />
               <span className="inline-flex items-center gap-1" title="Sold by">
                 <Store size={12} aria-hidden="true" />
                 {card.reseller ? card.reseller.businessName || card.reseller.name : 'APV direct'}
@@ -106,6 +107,17 @@ const CardRow = ({ card, onChange, onDeleted }) => {
         <div className="border-t border-gray-100 p-4 space-y-4">
           <Alert>{error}</Alert>
           <CardLinkBox url={url} code={card.code} title="NFC link" compact />
+          <ProductsEditor
+            card={card}
+            onAdd={async (type, qty) => {
+              const data = await api(`/api/admin/cards/${card.id}/products`, { method: 'POST', body: { type, qty } });
+              onChange(data.card);
+            }}
+            onRemove={async (type) => {
+              const data = await api(`/api/admin/cards/${card.id}/products/${type}`, { method: 'DELETE' });
+              onChange(data.card);
+            }}
+          />
 
           {card.owner?.status === 'invited' && (
             <div className="space-y-3">

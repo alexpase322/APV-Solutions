@@ -4,7 +4,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import AppHeader from '../../components/nfc/AppHeader';
 import CardEditor from '../../components/nfc/CardEditor';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
-import { Alert, StatusBadge } from '../../components/nfc/ui';
+import { Alert, ProductBadges, StatusBadge } from '../../components/nfc/ui';
 import { api, uploadImage } from '../../lib/api';
 import { cardPublicUrl, cardStatus } from '../../lib/nfc';
 import useNoIndex from '../../hooks/useNoIndex';
@@ -54,6 +54,9 @@ const AdminCardEditPage = () => {
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">{card.profile.fullName || 'Unnamed card'}</h1>
               <StatusBadge status={cardStatus(card)} />
+              <span className="text-xs">
+                <ProductBadges card={card} />
+              </span>
               <span className="text-sm text-gray-500">{card.owner?.email}</span>
             </div>
             <Alert kind="info">You're editing this client's public profile as an admin. They'll see the same changes when they log in.</Alert>

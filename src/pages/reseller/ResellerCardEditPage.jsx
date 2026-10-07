@@ -4,7 +4,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import AppHeader from '../../components/nfc/AppHeader';
 import CardEditor from '../../components/nfc/CardEditor';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
-import { Alert, ProductBadge, StatusBadge } from '../../components/nfc/ui';
+import { Alert, ProductBadges, StatusBadge } from '../../components/nfc/ui';
 import { api, uploadImage } from '../../lib/api';
 import { cardPublicUrl, cardStatus } from '../../lib/nfc';
 import useNoIndex from '../../hooks/useNoIndex';
@@ -56,7 +56,7 @@ const ResellerCardEditPage = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">{card.profile.fullName || 'Unnamed client'}</h1>
               <StatusBadge status={cardStatus(card)} />
               <span className="text-xs">
-                <ProductBadge type={card.productType} />
+                <ProductBadges card={card} />
               </span>
             </div>
             <CardLinkBox url={cardPublicUrl(card)} code={card.code} title="NFC link to program" compact />

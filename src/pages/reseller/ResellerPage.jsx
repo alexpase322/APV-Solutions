@@ -199,7 +199,7 @@ const ResellerPage = () => {
           {list.items.length > 0 && (
             <ul className="space-y-3">
               {list.items.map((card) => (
-                <ResellerCardRow key={card.id} card={card} onRequestSent={refresh} />
+                <ResellerCardRow key={card.id} card={card} stock={stock} onChanged={refresh} onRequestSent={refresh} />
               ))}
             </ul>
           )}
