@@ -6,7 +6,7 @@ import { NewPasswordFields } from './PasswordFields';
 import { passwordError } from '../../lib/nfc';
 import { Alert } from '../../components/nfc/ui';
 import { api } from '../../lib/api';
-import { useAuth } from '../../context/AuthContext';
+import { homeFor, useAuth } from '../../context/AuthContext';
 
 const ActivatePage = () => {
   const [params] = useSearchParams();
@@ -40,7 +40,7 @@ const ActivatePage = () => {
     try {
       const data = await api('/api/auth/activate', { method: 'POST', body: { token, password }, auth: false });
       setSession(data);
-      navigate('/dashboard?welcome=1', { replace: true });
+      navigate(`${homeFor(data.user)}?welcome=1`, { replace: true });
     } catch (err) {
       setError(err.message);
       setBusy(false);
@@ -87,7 +87,11 @@ const ActivatePage = () => {
     <AuthLayout
       pageTitle="Activate account"
       title={`Welcome${invite.name ? `, ${invite.name.split(' ')[0]}` : ''}! 👋`}
-      subtitle="Create a password to activate your APV digital card. Then you'll be able to complete your profile."
+      subtitle={
+        invite.role === 'reseller'
+          ? 'Create a password to activate your APV reseller account. Then you can register clients and program their NFC products.'
+          : "Create a password to activate your APV digital card. Then you'll be able to complete your profile."
+      }
     >
       <form onSubmit={submit} className="space-y-4">
         <Alert>{error}</Alert>
@@ -102,7 +106,7 @@ const ActivatePage = () => {
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] py-3.5 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
         >
           {busy && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
-          {busy ? 'Activating…' : 'Activate my card'}
+          {busy ? 'Activating…' : invite.role === 'reseller' ? 'Activate my reseller account' : 'Activate my card'}
         </button>
       </form>
     </AuthLayout>

@@ -18,6 +18,11 @@ import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import AdminPage from './pages/admin/AdminPage';
 import AdminCardEditPage from './pages/admin/AdminCardEditPage';
+import ResellersPage from './pages/admin/ResellersPage';
+import ResellerDetailPage from './pages/admin/ResellerDetailPage';
+import RequestsPage from './pages/admin/RequestsPage';
+import ResellerPage from './pages/reseller/ResellerPage';
+import ResellerCardEditPage from './pages/reseller/ResellerCardEditPage';
 
 function App() {
   return (
@@ -65,6 +70,48 @@ function App() {
             element={
               <ProtectedRoute role="superadmin">
                 <AdminCardEditPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/resellers"
+            element={
+              <ProtectedRoute role="superadmin">
+                <ResellersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/resellers/:id"
+            element={
+              <ProtectedRoute role="superadmin">
+                <ResellerDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/requests"
+            element={
+              <ProtectedRoute role="superadmin">
+                <RequestsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Reseller */}
+          <Route
+            path="/reseller"
+            element={
+              <ProtectedRoute role="reseller">
+                <ResellerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reseller/cards/:id"
+            element={
+              <ProtectedRoute role="reseller">
+                <ResellerCardEditPage />
               </ProtectedRoute>
             }
           />

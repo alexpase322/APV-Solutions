@@ -165,10 +165,14 @@ export const cardStatus = (card) => {
   return card.owner?.status || 'inactive';
 };
 
-export const inviteWhatsappHref = (name, inviteUrl) =>
-  `https://wa.me/?text=${encodeURIComponent(
-    `Hola ${name?.split(' ')[0] || ''} 👋 Tu tarjeta digital APV está lista. Activa tu cuenta y completa tu perfil aquí: ${inviteUrl}`
-  )}`;
+export const inviteWhatsappHref = (name, inviteUrl, kind = 'client') => {
+  const first = name?.split(' ')[0] || '';
+  const text =
+    kind === 'reseller'
+      ? `Hola ${first} 👋 Te registramos como vendedor autorizado de APV. Activa tu cuenta de vendedor aquí: ${inviteUrl}`
+      : `Hola ${first} 👋 Tu tarjeta digital APV está lista. Activa tu cuenta y completa tu perfil aquí: ${inviteUrl}`;
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+};
 
 export const passwordError = (password, confirm) => {
   if (password.length < 8) return 'Password must be at least 8 characters.';

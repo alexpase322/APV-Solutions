@@ -1,28 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Ban, ChevronDown, ChevronUp, Eye, Loader2, Mail, Pencil, Power, Save, Trash2, Unlock } from 'lucide-react';
+import { Ban, ChevronDown, ChevronUp, Eye, Mail, Pencil, Power, Save, Store, Trash2, Unlock } from 'lucide-react';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
-import { Alert, CopyButton, StatusBadge, inputClass } from '../../components/nfc/ui';
+import { ActionButton, Alert, CopyButton, ProductBadge, StatusBadge, inputClass } from '../../components/nfc/ui';
 import InviteLinkBox from './InviteLinkBox';
 import { api } from '../../lib/api';
 import { cardPublicUrl, cardStatus, initials } from '../../lib/nfc';
-
-const ActionButton = ({ onClick, icon, children, danger, busy, disabled }) => {
-  const Icon = icon;
-  return (
-  <button
-    type="button"
-    onClick={onClick}
-    disabled={busy || disabled}
-    className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
-      danger ? 'border-red-200 text-red-700 hover:bg-red-50' : 'border-gray-200 text-[#263646] hover:border-[#263646]'
-    }`}
-  >
-    {busy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <Icon size={15} aria-hidden="true" />}
-    {children}
-  </button>
-  );
-};
 
 const CardRow = ({ card, onChange, onDeleted }) => {
   const [open, setOpen] = useState(false);
@@ -80,6 +63,13 @@ const CardRow = ({ card, onChange, onDeleted }) => {
           <div className="min-w-0">
             <p className="font-semibold text-[#263646] truncate">{name}</p>
             <p className="text-sm text-gray-500 truncate">{card.owner?.email}</p>
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500">
+              <ProductBadge type={card.productType} />
+              <span className="inline-flex items-center gap-1" title="Sold by">
+                <Store size={12} aria-hidden="true" />
+                {card.reseller ? card.reseller.businessName || card.reseller.name : 'APV direct'}
+              </span>
+            </p>
           </div>
         </div>
 

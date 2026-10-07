@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Loader2 } from 'lucide-react';
+import { productById } from '../../lib/products';
 
 export const inputClass =
   'w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-[#263646] placeholder:text-gray-400 focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none transition-all';
@@ -83,3 +84,52 @@ export const StatusBadge = ({ status }) => {
   const s = STATUS[status] || STATUS.inactive;
   return <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ${s.cls}`}>{s.label}</span>;
 };
+
+export const ActionButton = ({ onClick, icon, children, danger, busy, disabled, type = 'button' }) => {
+  const Icon = icon;
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={busy || disabled}
+      className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
+        danger ? 'border-red-200 text-red-700 hover:bg-red-50' : 'border-gray-200 text-[#263646] hover:border-[#263646]'
+      }`}
+    >
+      {busy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <Icon size={15} aria-hidden="true" />}
+      {children}
+    </button>
+  );
+};
+
+/** Small pill with the product icon + name (card, bracelet…). */
+export const ProductBadge = ({ type }) => {
+  const product = productById(type);
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-[#263646]/5 px-2 py-0.5 font-semibold text-[#263646]">
+      <product.icon size={12} aria-hidden="true" />
+      {product.short}
+    </span>
+  );
+};
+
+export const Pagination = ({ page, pages, onChange }) => {
+  if (pages <= 1) return null;
+  const btn = 'rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-[#263646] disabled:opacity-40';
+  return (
+    <div className="flex items-center justify-center gap-3">
+      <button type="button" onClick={() => onChange(page - 1)} disabled={page <= 1} className={btn}>
+        Previous
+      </button>
+      <span className="text-sm text-gray-600">
+        Page {page} of {pages}
+      </span>
+      <button type="button" onClick={() => onChange(page + 1)} disabled={page >= pages} className={btn}>
+        Next
+      </button>
+    </div>
+  );
+};
+
+export const selectClass =
+  'rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-[#263646] focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20 outline-none';

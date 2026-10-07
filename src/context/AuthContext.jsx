@@ -55,4 +55,4 @@ export function useAuth() {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const homeFor = (user) => (user?.role === 'superadmin' ? '/admin' : '/dashboard');
+export const homeFor = (user) => ({ superadmin: '/admin', reseller: '/reseller' })[user?.role] || '/dashboard';
