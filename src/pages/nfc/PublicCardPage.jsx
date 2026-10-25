@@ -5,6 +5,8 @@ import CardProfile from '../../components/nfc/CardProfile';
 import { api, vcardUrl } from '../../lib/api';
 import useNoIndex from '../../hooks/useNoIndex';
 import useCardTheme from '../../hooks/useCardTheme';
+import BookingWidget from '../../components/nfc/BookingWidget';
+import { luminance, readableOn } from '../../lib/nfc';
 
 const PAGE_BG = { light: '#F8F9FA', dark: '#0b1119' };
 
@@ -91,10 +93,15 @@ const PublicCardPage = () => {
 
   const { card } = state;
   const shareUrl = `${window.location.origin}/c/${card.code}`;
+  // Same rule as the card's main button: a very dark accent is inverted at night so it stays visible
+  const rawAccent = /^#[0-9a-f]{6}$/i.test(card.profile?.accentColor || '') ? card.profile.accentColor : '#263646';
+  const accent = dark && luminance(rawAccent) < 0.08 ? '#F3F4F6' : rawAccent;
 
   return (
     <main className={`${pageClass} sm:py-10`}>
-      <CardProfile profile={card.profile} vcardHref={vcardUrl(card.code)} shareUrl={shareUrl} />
+      <CardProfile profile={card.profile} vcardHref={vcardUrl(card.code)} shareUrl={shareUrl}>
+        {card.booking && <BookingWidget code={card.code} booking={card.booking} accent={accent} onAccent={readableOn(accent)} />}
+      </CardProfile>
 
       {!card.ready && (
         <p className="max-w-md mx-auto px-6 mt-4 text-center text-xs text-gray-500 dark:text-gray-400">

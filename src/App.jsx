@@ -16,6 +16,8 @@ import ActivatePage from './pages/auth/ActivatePage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
+import DashboardAppointmentsPage from './pages/dashboard/DashboardAppointmentsPage';
+import ManageAppointmentPage from './pages/nfc/ManageAppointmentPage';
 import AdminPage from './pages/admin/AdminPage';
 import AdminCardEditPage from './pages/admin/AdminCardEditPage';
 import ResellersPage from './pages/admin/ResellersPage';
@@ -39,6 +41,8 @@ function App() {
 
           {/* Public NFC card — this is the URL programmed into each chip */}
           <Route path="/c/:code" element={<PublicCardPage />} />
+          {/* Link from the booking confirmation email */}
+          <Route path="/appointment" element={<ManageAppointmentPage />} />
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
@@ -52,6 +56,15 @@ function App() {
             element={
               <ProtectedRoute role="user">
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/appointments"
+            element={
+              <ProtectedRoute role="user">
+                <DashboardAppointmentsPage />
               </ProtectedRoute>
             }
           />

@@ -67,8 +67,9 @@ const ActionButton = ({ href, icon, label, external }) => {
  * @param {string} [props.vcardHref] Download link for "Save contact" (omit in previews)
  * @param {string} [props.shareUrl]  Public URL used by the Share button
  * @param {boolean} [props.preview]  Renders non-interactive (editor preview)
+ * @param {React.ReactNode} [props.children] Extra sections shown after the quick actions (booking widget…)
  */
-const CardProfile = ({ profile, vcardHref, shareUrl, preview = false }) => {
+const CardProfile = ({ profile, vcardHref, shareUrl, preview = false, children }) => {
   const [copied, setCopied] = useState(false);
   const p = profile || {};
   const dark = useCardTheme(p.theme);
@@ -213,6 +214,9 @@ const CardProfile = ({ profile, vcardHref, shareUrl, preview = false }) => {
             ))}
           </div>
         )}
+
+        {/* Extra sections injected by the page (e.g. appointment booking) — rendered inside the card so they share its theme */}
+        {children}
 
         {/* Social media + custom links as pills */}
         {pills.length > 0 && (

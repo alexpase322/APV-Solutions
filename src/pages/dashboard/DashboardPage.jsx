@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BarChart3, KeyRound, Loader2, PartyPopper } from 'lucide-react';
 import AppHeader from '../../components/nfc/AppHeader';
+import DashboardNav from './DashboardNav';
 import CardEditor from '../../components/nfc/CardEditor';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
 import { Alert, Field, Section } from '../../components/nfc/ui';
@@ -87,7 +88,8 @@ const DashboardPage = () => {
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       <AppHeader subtitle="MY DIGITAL CARD" />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <DashboardNav />
         {welcome && (
           <div className="flex items-start gap-3 rounded-2xl border border-[#94A378]/40 bg-[#94A378]/10 p-4 text-[#263646]">
             <PartyPopper size={22} className="text-[#94A378] flex-shrink-0 mt-0.5" aria-hidden="true" />
