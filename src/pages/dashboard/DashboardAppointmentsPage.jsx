@@ -1,6 +1,6 @@
 import React from 'react';
 import AppHeader from '../../components/nfc/AppHeader';
-import AppointmentsList from '../../components/nfc/AppointmentsList';
+import AppointmentsPanel from '../../components/nfc/AppointmentsPanel';
 import BookingSettings from '../../components/nfc/BookingSettings';
 import DashboardNav from './DashboardNav';
 import useNoIndex from '../../hooks/useNoIndex';
@@ -17,7 +17,7 @@ const DashboardAppointmentsPage = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">Appointments</h1>
           <p className="text-gray-600">People who tap your card can book a time with you. You get an email for every booking.</p>
         </div>
-        <AppointmentsList endpoint="/api/me/appointments" cancelPath={(a) => `/api/me/appointments/${a.id}/cancel`} title="Your appointments" />
+        <AppointmentsPanel endpoint="/api/me/appointments" cancelPath={(a) => `/api/me/appointments/${a.id}/cancel`} title="Your appointments" />
         <BookingSettings endpoint="/api/me/booking" />
       </main>
     </div>

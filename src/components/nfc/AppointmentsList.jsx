@@ -9,7 +9,7 @@ const STATUS = {
   cancelled: { label: 'Cancelled', cls: 'bg-gray-200 text-gray-700' },
 };
 
-const AppointmentItem = ({ appt, canCancel, cancelPath, onChanged }) => {
+export const AppointmentItem =({ appt, canCancel, cancelPath, onChanged }) => {
   const [confirming, setConfirming] = useState(false);
   const [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false);

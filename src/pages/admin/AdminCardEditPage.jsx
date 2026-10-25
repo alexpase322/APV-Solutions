@@ -5,7 +5,7 @@ import AppHeader from '../../components/nfc/AppHeader';
 import CardEditor from '../../components/nfc/CardEditor';
 import CardLinkBox from '../../components/nfc/CardLinkBox';
 import BookingSettings from '../../components/nfc/BookingSettings';
-import AppointmentsList from '../../components/nfc/AppointmentsList';
+import AppointmentsPanel from '../../components/nfc/AppointmentsPanel';
 import { Alert, ProductBadges, StatusBadge } from '../../components/nfc/ui';
 import { api, uploadImage } from '../../lib/api';
 import { cardPublicUrl, cardStatus } from '../../lib/nfc';
@@ -66,7 +66,7 @@ const AdminCardEditPage = () => {
             <CardEditor profile={card.profile} onSave={save} onUpload={upload} />
             <div className="pt-6 border-t border-gray-200 space-y-6">
               <h2 className="text-xl font-bold text-[#263646]">Appointments</h2>
-              <AppointmentsList endpoint={`/api/admin/cards/${id}/appointments`} title="Client's appointments" />
+              <AppointmentsPanel endpoint={`/api/admin/cards/${id}/appointments`} title="Client's appointments" />
               <BookingSettings endpoint={`/api/admin/cards/${id}/booking`} />
             </div>
           </>
