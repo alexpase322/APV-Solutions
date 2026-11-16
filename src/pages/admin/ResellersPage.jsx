@@ -37,7 +37,7 @@ const NewResellerForm = ({ onCreated }) => {
       <Section
         title={
           <span className="inline-flex items-center gap-2">
-            <CheckCircle2 className="text-[#94A378]" size={22} aria-hidden="true" /> Reseller {result.reseller.name} registered
+            <CheckCircle2 className="text-sage-300" size={22} aria-hidden="true" /> Reseller {result.reseller.name} registered
           </span>
         }
         description="Next: register the products you sold them, so they can start creating clients."
@@ -46,7 +46,7 @@ const NewResellerForm = ({ onCreated }) => {
         <div className="flex flex-wrap gap-2">
           <Link
             to={`/admin/resellers/${result.reseller.id}`}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#263646] px-5 py-3 font-semibold text-white hover:bg-[#94A378] transition-colors"
+            className="inline-flex items-center gap-2 rounded-full bg-sage-300 px-5 py-3 font-semibold text-ink-950 hover:bg-sage-200 transition-colors"
           >
             <Plus size={16} aria-hidden="true" /> Add products to their stock
           </Link>
@@ -56,7 +56,7 @@ const NewResellerForm = ({ onCreated }) => {
               setResult(null);
               setForm(EMPTY);
             }}
-            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3 font-semibold text-[#263646] hover:border-[#263646] transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
           >
             Register another
           </button>
@@ -86,14 +86,14 @@ const NewResellerForm = ({ onCreated }) => {
         <Field id="r-notes" label="Internal notes (optional)" hint="Only visible to APV — never shown to the reseller.">
           <textarea id="r-notes" rows={2} className={`${inputClass} resize-none`} value={form.notes} onChange={set('notes')} maxLength={1000} />
         </Field>
-        <label className="flex items-center gap-2 text-sm text-[#263646]">
-          <input type="checkbox" checked={form.sendEmail} onChange={set('sendEmail')} className="w-4 h-4 accent-[#263646]" />
+        <label className="flex items-center gap-2 text-sm text-ink-100">
+          <input type="checkbox" checked={form.sendEmail} onChange={set('sendEmail')} className="w-4 h-4 accent-sage-300" />
           Email the activation link to the reseller
         </label>
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center gap-2 rounded-xl bg-[#263646] px-6 py-3 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
+          className="inline-flex items-center gap-2 rounded-full bg-sage-300 px-6 py-3 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-60 disabled:hover:bg-sage-300 transition-colors"
         >
           {busy ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <UserPlus size={18} aria-hidden="true" />}
           {busy ? 'Registering…' : 'Register reseller'}
@@ -120,29 +120,29 @@ const ResellersPage = () => {
   }, [reloadKey]);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="SUPER ADMIN · RESELLERS" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <AdminNav refreshKey={reloadKey} />
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">Resellers</h1>
-          <p className="text-gray-600">People who buy NFC products from APV and resell them. They only see their own stock and clients.</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">Resellers</h1>
+          <p className="mt-1 text-ink-100">People who buy NFC products from APV and resell them. They only see their own stock and clients.</p>
         </div>
 
         <NewResellerForm onCreated={refresh} />
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-[#263646]">
-            All resellers <span className="text-gray-400 font-normal">({state.items.length})</span>
+          <h2 className="text-lg font-semibold tracking-[-0.02em] text-ink-50">
+            All resellers <span className="nums text-ink-200 font-normal">({state.items.length})</span>
           </h2>
           {state.status === 'error' && <Alert>{state.error}</Alert>}
           {state.status === 'loading' && (
             <div className="flex justify-center py-12">
-              <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+              <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
             </div>
           )}
           {state.status === 'ready' && state.items.length === 0 && (
-            <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
+            <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-10 text-center text-ink-200">
               No resellers yet. Register the first one above.
             </div>
           )}
@@ -151,15 +151,15 @@ const ResellersPage = () => {
               <li key={r.id}>
                 <Link
                   to={`/admin/resellers/${r.id}`}
-                  className="group flex flex-col md:flex-row md:items-center gap-3 rounded-2xl border border-gray-100 bg-white p-4 hover:border-gray-300 transition-colors"
+                  className="surface group flex flex-col md:flex-row md:items-center gap-3 rounded-3xl p-4 hover:border-white/20 hover:bg-ink-750 transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-11 h-11 rounded-xl bg-[#263646] text-[#E4B34C] flex items-center justify-center flex-shrink-0">
+                    <div className="w-11 h-11 rounded-xl border border-gold-400/25 bg-gold-400/[0.08] text-gold-300 flex items-center justify-center flex-shrink-0">
                       <Store size={20} aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-semibold text-[#263646] truncate">{r.businessName || r.name}</p>
-                      <p className="text-sm text-gray-500 truncate">
+                      <p className="font-semibold text-ink-50 truncate">{r.businessName || r.name}</p>
+                      <p className="text-sm text-ink-200 truncate">
                         {r.businessName ? `${r.name} · ` : ''}
                         {r.email}
                       </p>
@@ -167,13 +167,13 @@ const ResellersPage = () => {
                   </div>
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                     <StatusBadge status={r.status} />
-                    <span className="text-gray-600">
-                      <strong className="text-[#263646]">{r.stock.available}</strong> available / {r.stock.purchased} bought
+                    <span className="nums text-ink-100">
+                      <strong className="font-semibold text-ink-50">{r.stock.available}</strong> available / {r.stock.purchased} bought
                     </span>
-                    <span className="text-gray-600">
-                      <strong className="text-[#263646]">{r.clients}</strong> clients
+                    <span className="nums text-ink-100">
+                      <strong className="font-semibold text-ink-50">{r.clients}</strong> clients
                     </span>
-                    <ChevronRight size={18} className="text-gray-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+                    <ChevronRight size={18} className="text-ink-200 group-hover:text-ink-50 group-hover:translate-x-0.5 transition" aria-hidden="true" />
                   </div>
                 </Link>
               </li>

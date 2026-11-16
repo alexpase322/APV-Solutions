@@ -37,16 +37,16 @@ const AdminCardEditPage = () => {
   const { card } = state;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="SUPER ADMIN · NFC CARDS" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <Link to="/admin" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#263646] hover:text-[#94A378]">
-          <ArrowLeft size={16} aria-hidden="true" /> Back to all cards
+        <Link to="/admin" className="group inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-ink-50 hover:text-sage-300 transition-colors">
+          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" /> Back to all cards
         </Link>
 
         {state.status === 'loading' && (
           <div className="flex justify-center py-12">
-            <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+            <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
           </div>
         )}
         {state.status === 'error' && <Alert>{state.error}</Alert>}
@@ -54,18 +54,18 @@ const AdminCardEditPage = () => {
         {card && (
           <>
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">{card.profile.fullName || 'Unnamed card'}</h1>
+              <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">{card.profile.fullName || 'Unnamed card'}</h1>
               <StatusBadge status={cardStatus(card)} />
               <span className="text-xs">
                 <ProductBadges card={card} />
               </span>
-              <span className="text-sm text-gray-500">{card.owner?.email}</span>
+              <span className="text-sm text-ink-200">{card.owner?.email}</span>
             </div>
             <Alert kind="info">You're editing this client's public profile as an admin. They'll see the same changes when they log in.</Alert>
             <CardLinkBox url={cardPublicUrl(card)} code={card.code} title="NFC link" compact />
             <CardEditor profile={card.profile} onSave={save} onUpload={upload} />
-            <div className="pt-6 border-t border-gray-200 space-y-6">
-              <h2 className="text-xl font-bold text-[#263646]">Appointments</h2>
+            <div className="pt-6 border-t border-white/[0.08] space-y-6">
+              <h2 className="text-xl font-semibold tracking-[-0.02em] text-ink-50">Appointments</h2>
               <AppointmentsPanel endpoint={`/api/admin/cards/${id}/appointments`} title="Client's appointments" />
               <BookingSettings endpoint={`/api/admin/cards/${id}/booking`} />
             </div>

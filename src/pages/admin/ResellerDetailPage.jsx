@@ -68,7 +68,7 @@ const InfoSection = ({ reseller, clients, onSaved, onDeleted }) => {
             <input id="d-business" className={inputClass} value={form.businessName} onChange={set('businessName')} maxLength={120} />
           </Field>
           <Field id="d-email" label="Email (login)">
-            <input id="d-email" className={`${inputClass} bg-gray-50`} value={reseller.email} readOnly />
+            <input id="d-email" className={`${inputClass} !bg-white/[0.02] !text-ink-200`} value={reseller.email} readOnly />
           </Field>
           <Field id="d-phone" label="Phone">
             <input id="d-phone" type="tel" className={inputClass} value={form.phone} onChange={set('phone')} maxLength={30} />
@@ -86,8 +86,8 @@ const InfoSection = ({ reseller, clients, onSaved, onDeleted }) => {
         (invite ? (
           <InviteLinkBox kind="reseller" name={reseller.name} inviteUrl={invite.inviteUrl} email={invite.email} />
         ) : (
-          <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-gray-100">
-            <p className="text-sm text-gray-600">This reseller hasn't activated their account yet.</p>
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/[0.08]">
+            <p className="text-sm text-ink-100">This reseller hasn't activated their account yet.</p>
             <ActionButton
               icon={Mail}
               busy={busy === 'invite'}
@@ -100,10 +100,10 @@ const InfoSection = ({ reseller, clients, onSaved, onDeleted }) => {
           </div>
         ))}
 
-      <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
+      <div className="flex flex-wrap gap-2 pt-4 border-t border-white/[0.08]">
         <Link
           to={`/admin?reseller=${reseller.id}`}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-[#263646] hover:border-[#263646] transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
         >
           <Users size={15} aria-hidden="true" /> View their {clients} clients
         </Link>
@@ -160,8 +160,8 @@ const StockForm = ({ resellerId, onAdded }) => {
   };
 
   return (
-    <form onSubmit={submit} className="space-y-3 rounded-2xl bg-[#F8F9FA] border border-gray-100 p-4">
-      <p className="font-semibold text-[#263646]">Register products sold to this reseller</p>
+    <form onSubmit={submit} className="space-y-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4">
+      <p className="font-semibold text-ink-50">Register products sold to this reseller</p>
       {msg && <Alert kind={msg.kind}>{msg.text}</Alert>}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Field id="s-product" label="Product">
@@ -183,7 +183,7 @@ const StockForm = ({ resellerId, onAdded }) => {
           <input id="s-note" className={inputClass} value={form.note} onChange={set('note')} maxLength={300} placeholder="Invoice #, payment…" />
         </Field>
       </div>
-      <p className="text-xs text-gray-500">Use a negative quantity to correct a mistake or register returned units.</p>
+      <p className="text-xs text-ink-200">Use a negative quantity to correct a mistake or register returned units.</p>
       <ActionButton type="submit" icon={PackagePlus} busy={busy}>
         Add to stock
       </ActionButton>
@@ -212,17 +212,17 @@ const ResellerDetailPage = () => {
   const d = state.data;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="SUPER ADMIN · RESELLERS" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <AdminNav refreshKey={reloadKey} />
-        <Link to="/admin/resellers" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#263646] hover:text-[#94A378]">
-          <ArrowLeft size={16} aria-hidden="true" /> All resellers
+        <Link to="/admin/resellers" className="group inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-ink-50 hover:text-sage-300 transition-colors">
+          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" /> All resellers
         </Link>
 
         {state.status === 'loading' && (
           <div className="flex justify-center py-12">
-            <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+            <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
           </div>
         )}
         {state.status === 'error' && <Alert>{state.error}</Alert>}
@@ -230,7 +230,7 @@ const ResellerDetailPage = () => {
         {d && (
           <>
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">{d.reseller.businessName || d.reseller.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">{d.reseller.businessName || d.reseller.name}</h1>
               <StatusBadge status={d.reseller.status} />
             </div>
 
@@ -244,29 +244,29 @@ const ResellerDetailPage = () => {
               />
 
               <Section title="Stock" description="Units bought from APV, used for clients, and still available.">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                <div className="overflow-x-auto rounded-2xl border border-white/[0.06]">
+                  <table className="nums w-full text-sm">
                     <thead>
-                      <tr className="text-left text-gray-500">
-                        <th className="py-2 font-medium">Product</th>
-                        <th className="py-2 font-medium text-right">Bought</th>
-                        <th className="py-2 font-medium text-right">Used</th>
-                        <th className="py-2 font-medium text-right">Available</th>
+                      <tr className="bg-white/[0.03] text-left font-mono text-[11px] uppercase tracking-[0.14em] text-ink-200">
+                        <th className="px-3 py-2.5 font-medium">Product</th>
+                        <th className="px-3 py-2.5 font-medium text-right">Bought</th>
+                        <th className="px-3 py-2.5 font-medium text-right">Used</th>
+                        <th className="px-3 py-2.5 font-medium text-right">Available</th>
                       </tr>
                     </thead>
                     <tbody>
                       {d.inventory.map((row) => {
                         const product = productById(row.productType);
                         return (
-                          <tr key={row.productType} className="border-t border-gray-100">
-                            <td className="py-2.5">
-                              <span className="inline-flex items-center gap-2 font-medium text-[#263646]">
-                                <product.icon size={16} aria-hidden="true" /> {product.label}
+                          <tr key={row.productType} className="border-t border-white/[0.06] transition-colors hover:bg-white/[0.02]">
+                            <td className="px-3 py-2.5">
+                              <span className="inline-flex items-center gap-2 font-medium text-ink-50">
+                                <product.icon size={16} className="text-ink-200" aria-hidden="true" /> {product.label}
                               </span>
                             </td>
-                            <td className="py-2.5 text-right text-gray-700">{row.purchased}</td>
-                            <td className="py-2.5 text-right text-gray-700">{row.used}</td>
-                            <td className={`py-2.5 text-right font-bold ${row.available > 0 ? 'text-[#4d5a37]' : 'text-gray-400'}`}>{row.available}</td>
+                            <td className="px-3 py-2.5 text-right text-ink-100">{row.purchased}</td>
+                            <td className="px-3 py-2.5 text-right text-ink-100">{row.used}</td>
+                            <td className={`px-3 py-2.5 text-right font-bold ${row.available > 0 ? 'text-sage-200' : 'text-ink-200'}`}>{row.available}</td>
                           </tr>
                         );
                       })}
@@ -279,31 +279,31 @@ const ResellerDetailPage = () => {
 
             <Section title="Stock history" description="Every delivery or correction registered for this reseller.">
               {d.entries.length === 0 ? (
-                <p className="text-sm text-gray-500">No products registered yet.</p>
+                <p className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center text-sm text-ink-200">No products registered yet.</p>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                <div className="overflow-x-auto rounded-2xl border border-white/[0.06]">
+                  <table className="nums w-full text-sm">
                     <thead>
-                      <tr className="text-left text-gray-500">
-                        <th className="py-2 font-medium">Date</th>
-                        <th className="py-2 font-medium">Product</th>
-                        <th className="py-2 font-medium text-right">Qty</th>
-                        <th className="py-2 font-medium text-right">Unit price</th>
-                        <th className="py-2 font-medium text-right">Total</th>
-                        <th className="py-2 font-medium pl-4">Note</th>
+                      <tr className="bg-white/[0.03] text-left font-mono text-[11px] uppercase tracking-[0.14em] text-ink-200">
+                        <th className="px-3 py-2.5 font-medium">Date</th>
+                        <th className="px-3 py-2.5 font-medium">Product</th>
+                        <th className="px-3 py-2.5 font-medium text-right">Qty</th>
+                        <th className="px-3 py-2.5 font-medium text-right whitespace-nowrap">Unit price</th>
+                        <th className="px-3 py-2.5 font-medium text-right">Total</th>
+                        <th className="px-3 py-2.5 font-medium pl-4">Note</th>
                       </tr>
                     </thead>
                     <tbody>
                       {d.entries.map((e) => (
-                        <tr key={e.id} className="border-t border-gray-100">
-                          <td className="py-2.5 whitespace-nowrap text-gray-700">{new Date(e.createdAt).toLocaleDateString()}</td>
-                          <td className="py-2.5 whitespace-nowrap text-[#263646]">{productById(e.productType).label}</td>
-                          <td className={`py-2.5 text-right font-bold ${e.quantity > 0 ? 'text-[#4d5a37]' : 'text-red-700'}`}>
+                        <tr key={e.id} className="border-t border-white/[0.06] transition-colors hover:bg-white/[0.02]">
+                          <td className="px-3 py-2.5 whitespace-nowrap text-ink-100">{new Date(e.createdAt).toLocaleDateString()}</td>
+                          <td className="px-3 py-2.5 whitespace-nowrap text-ink-50">{productById(e.productType).label}</td>
+                          <td className={`px-3 py-2.5 text-right font-bold ${e.quantity > 0 ? 'text-sage-200' : 'text-red-300'}`}>
                             {e.quantity > 0 ? `+${e.quantity}` : e.quantity}
                           </td>
-                          <td className="py-2.5 text-right text-gray-700">{money(e.unitPrice)}</td>
-                          <td className="py-2.5 text-right text-gray-700">{e.unitPrice == null ? '—' : money(e.unitPrice * e.quantity)}</td>
-                          <td className="py-2.5 pl-4 text-gray-600">{e.note || '—'}</td>
+                          <td className="px-3 py-2.5 text-right text-ink-100">{money(e.unitPrice)}</td>
+                          <td className="px-3 py-2.5 text-right text-ink-100">{e.unitPrice == null ? '—' : money(e.unitPrice * e.quantity)}</td>
+                          <td className="px-3 py-2.5 pl-4 text-ink-100">{e.note || '—'}</td>
                         </tr>
                       ))}
                     </tbody>

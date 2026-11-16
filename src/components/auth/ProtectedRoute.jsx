@@ -4,9 +4,9 @@ import { Loader2 } from 'lucide-react';
 import { homeFor, useAuth } from '../../context/AuthContext';
 
 export const FullPageLoader = ({ label = 'Loading…' }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center gap-3 bg-[#F8F9FA] text-[#263646]">
-    <Loader2 className="animate-spin text-[#94A378]" size={32} aria-hidden="true" />
-    <p className="text-sm text-gray-500">{label}</p>
+  <div className="min-h-screen flex flex-col items-center justify-center gap-3 bg-ink-900 text-ink-50">
+    <Loader2 className="animate-spin text-sage-300" size={32} aria-hidden="true" />
+    <p className="text-sm text-ink-200">{label}</p>
   </div>
 );
 

@@ -33,15 +33,15 @@ const AppointmentsPanel = (props) => {
   return (
     <div className="space-y-3">
       <div className="flex justify-end">
-        <div className="flex gap-1 bg-white border border-gray-200 rounded-xl p-1" role="group" aria-label="Appointments view">
+        <div className="flex gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1" role="group" aria-label="Appointments view">
           {VIEWS.map((v) => (
             <button
               key={v.id}
               type="button"
               onClick={() => choose(v.id)}
               aria-pressed={view === v.id}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                view === v.id ? 'bg-[#263646] text-white' : 'text-gray-600 hover:text-[#263646]'
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+                view === v.id ? 'bg-sage-300 text-ink-950' : 'text-ink-200 hover:bg-white/[0.05] hover:text-ink-50'
               }`}
             >
               <v.icon size={15} aria-hidden="true" /> {v.label}

@@ -19,7 +19,7 @@ export const PasswordInput = ({ id, value, onChange, autoComplete = 'current-pas
         type="button"
         onClick={() => setVisible((v) => !v)}
         aria-label={visible ? 'Hide password' : 'Show password'}
-        className="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-[#263646]"
+        className="absolute inset-y-0 right-0 rounded-r-xl px-4 text-ink-200 transition-colors hover:text-ink-50 focus-visible:-outline-offset-2"
       >
         {visible ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
       </button>

@@ -11,12 +11,13 @@ import { REQUEST_STATUS, REQUEST_TYPES } from '../../lib/requests';
 import useNoIndex from '../../hooks/useNoIndex';
 
 const Stat = ({ label, value }) => (
-  <div className="bg-white rounded-2xl border border-gray-100 p-4">
-    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</p>
-    <p className="text-2xl sm:text-3xl font-bold text-[#263646] mt-1">{value ?? '—'}</p>
+  <div className="surface rounded-3xl p-4 sm:p-5">
+    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-200">{label}</p>
+    <p className="nums text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50 mt-2">{value ?? '—'}</p>
   </div>
 );
 
+// Dark-theme status tones (the `cls` in lib/requests.js is tuned for light backgrounds).
 const MyRequests = ({ reloadKey }) => {
   const [items, setItems] = useState(null);
   useEffect(() => {
@@ -30,19 +31,19 @@ const MyRequests = ({ reloadKey }) => {
   if (!items || items.length === 0) return null;
   return (
     <Section title="My requests" description="Changes you asked APV to make.">
-      <ul className="divide-y divide-gray-100">
+      <ul className="divide-y divide-white/[0.06]">
         {items.map((r) => (
           <li key={r.id} className="py-3 flex flex-col sm:flex-row sm:items-center gap-2">
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-[#263646]">
+              <p className="font-medium text-ink-50">
                 {REQUEST_TYPES[r.type]?.label} · {r.clientName || r.cardCode}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-ink-200">
                 {new Date(r.createdAt).toLocaleString()}
                 {r.adminNote ? ` · APV: “${r.adminNote}”` : ''}
               </p>
             </div>
-            <span className={`w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ${REQUEST_STATUS[r.status].cls}`}>
+            <span className={`w-fit rounded-full border px-2.5 py-0.5 text-xs font-semibold ${REQUEST_STATUS[r.status].cls}`}>
               {REQUEST_STATUS[r.status].label}
             </span>
           </li>
@@ -93,29 +94,29 @@ const ResellerPage = () => {
   const ownedProducts = summary ? summary.inventory.filter((i) => i.purchased > 0) : [];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="RESELLER PANEL" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {welcome && (
-          <div className="flex items-start gap-3 rounded-2xl border border-[#94A378]/40 bg-[#94A378]/10 p-4 text-[#263646]">
-            <PartyPopper size={22} className="text-[#94A378] flex-shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="flex items-start gap-3 rounded-3xl border border-sage-300/30 bg-sage-300/[0.08] p-4 sm:p-5 text-ink-50">
+            <PartyPopper size={22} className="text-sage-300 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <div className="flex-1">
-              <p className="font-bold">Your reseller account is active!</p>
-              <p className="text-sm text-gray-700">
+              <p className="font-semibold">Your reseller account is active!</p>
+              <p className="text-sm text-ink-100">
                 For each product you sell, create the client below and program the NFC chip with the link you get.
               </p>
             </div>
-            <button type="button" onClick={() => setParams({}, { replace: true })} className="text-sm font-semibold text-[#263646] hover:underline">
+            <button type="button" onClick={() => setParams({}, { replace: true })} className="-my-1 rounded-full px-3 py-1 text-sm font-semibold text-sage-200 transition-colors hover:bg-sage-300/15 hover:text-sage-100">
               Got it
             </button>
           </div>
         )}
 
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">
             {summary?.reseller.businessName || summary?.reseller.name || 'Reseller panel'}
           </h1>
-          <p className="text-gray-600">Your stock and the clients you've registered. Only you can see them.</p>
+          <p className="mt-1 text-ink-100">Your stock and the clients you've registered. Only you can see them.</p>
         </div>
 
         {/* Stock */}
@@ -123,12 +124,12 @@ const ResellerPage = () => {
           {(ownedProducts.length ? ownedProducts : summary?.inventory.slice(0, 2) || []).map((i) => {
             const product = productById(i.productType);
             return (
-              <div key={i.productType} className="bg-white rounded-2xl border border-gray-100 p-4">
-                <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <div key={i.productType} className="surface rounded-3xl p-4 sm:p-5">
+                <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-200">
                   <product.icon size={14} aria-hidden="true" /> {product.label}
                 </p>
-                <p className={`text-3xl font-bold mt-1 ${i.available > 0 ? 'text-[#263646]' : 'text-gray-400'}`}>{i.available}</p>
-                <p className="text-xs text-gray-500">available · {i.used} of {i.purchased} used</p>
+                <p className={`nums text-3xl font-semibold tracking-[-0.03em] mt-2 ${i.available > 0 ? 'text-ink-50' : 'text-ink-200'}`}>{i.available}</p>
+                <p className="nums text-xs text-ink-200">available · {i.used} of {i.purchased} used</p>
               </div>
             );
           })}
@@ -150,17 +151,17 @@ const ResellerPage = () => {
           />
         ) : (
           <div className="flex justify-center py-8">
-            <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+            <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
           </div>
         )}
 
         <section className="space-y-4">
           <div className="flex flex-col md:flex-row md:items-center gap-3">
-            <h2 className="text-lg font-bold text-[#263646] md:mr-auto">
-              My clients <span className="text-gray-400 font-normal">({list.total})</span>
+            <h2 className="text-lg font-semibold tracking-[-0.02em] text-ink-50 md:mr-auto">
+              My clients <span className="nums text-ink-200 font-normal">({list.total})</span>
             </h2>
             <div className="relative md:w-72">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-200" aria-hidden="true" />
               <input
                 type="search"
                 aria-label="Search my clients"
@@ -188,11 +189,11 @@ const ResellerPage = () => {
           {list.status === 'error' && <Alert>{list.error}</Alert>}
           {list.status === 'loading' && (
             <div className="flex justify-center py-12">
-              <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+              <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
             </div>
           )}
           {list.status === 'ready' && list.items.length === 0 && (
-            <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
+            <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-10 text-center text-ink-200">
               {query.search || query.product ? 'No clients match your filters.' : 'No clients yet. Create your first one above.'}
             </div>
           )}

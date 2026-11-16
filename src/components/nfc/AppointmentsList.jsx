@@ -5,8 +5,8 @@ import { api } from '../../lib/api';
 import { LOCATIONS, formatInZone, formatTime, timeZoneLabel } from '../../lib/booking';
 
 const STATUS = {
-  confirmed: { label: 'Confirmed', cls: 'bg-[#94A378]/15 text-[#4d5a37]' },
-  cancelled: { label: 'Cancelled', cls: 'bg-gray-200 text-gray-700' },
+  confirmed: { label: 'Confirmed', cls: 'border-sage-300/30 bg-sage-300/10 text-sage-200' },
+  cancelled: { label: 'Cancelled', cls: 'border-white/10 bg-white/[0.04] text-ink-200' },
 };
 
 export const AppointmentItem =({ appt, canCancel, cancelPath, onChanged }) => {
@@ -31,43 +31,43 @@ export const AppointmentItem =({ appt, canCancel, cancelPath, onChanged }) => {
   };
 
   return (
-    <li className="rounded-2xl border border-gray-100 bg-white p-4">
+    <li className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-4">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="sm:w-40 flex-shrink-0">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{formatInZone(appt.start, tz, { weekday: 'short', month: 'short', day: 'numeric' })}</p>
-          <p className="text-xl font-bold text-[#263646]">{formatTime(appt.start, tz)}</p>
-          <p className="text-xs text-gray-500">
+          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-200">{formatInZone(appt.start, tz, { weekday: 'short', month: 'short', day: 'numeric' })}</p>
+          <p className="nums mt-0.5 text-xl font-semibold tracking-[-0.02em] text-ink-50">{formatTime(appt.start, tz)}</p>
+          <p className="text-xs text-ink-200">
             to {formatTime(appt.end, tz)} · {timeZoneLabel(tz)}
           </p>
         </div>
         <div className="flex-1 min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="font-semibold text-[#263646]">{appt.name}</p>
-            <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.cls}`}>
+            <p className="font-semibold text-ink-50">{appt.name}</p>
+            <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${status.cls}`}>
               {status.label}
               {appt.status === 'cancelled' && appt.cancelledBy ? ` by ${appt.cancelledBy === 'owner' ? 'you' : 'client'}` : ''}
             </span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-ink-100">
             {appt.title} · <loc.icon size={13} className="inline -mt-0.5" aria-hidden="true" /> {loc.label}
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            <a href={`mailto:${appt.email}`} className="inline-flex items-center gap-1 text-[#263646] hover:underline break-all">
+            <a href={`mailto:${appt.email}`} className="inline-flex items-center gap-1 text-ink-50 underline-offset-4 hover:text-sage-200 hover:underline break-all transition-colors">
               <Mail size={14} aria-hidden="true" /> {appt.email}
             </a>
             {appt.phone && (
-              <a href={`tel:${appt.phone}`} className="inline-flex items-center gap-1 text-[#263646] hover:underline">
+              <a href={`tel:${appt.phone}`} className="inline-flex items-center gap-1 text-ink-50 underline-offset-4 hover:text-sage-200 hover:underline transition-colors">
                 <Phone size={14} aria-hidden="true" /> {appt.phone}
               </a>
             )}
           </div>
           {appt.note && (
-            <p className="mt-2 flex gap-2 rounded-xl bg-[#F8F9FA] px-3 py-2 text-sm text-gray-700 whitespace-pre-line">
-              <MessageSquare size={14} className="flex-shrink-0 mt-0.5 text-gray-500" aria-hidden="true" />
+            <p className="mt-2 flex gap-2 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-sm text-ink-100 whitespace-pre-line">
+              <MessageSquare size={14} className="flex-shrink-0 mt-0.5 text-ink-200" aria-hidden="true" />
               {appt.note}
             </p>
           )}
-          {appt.cancelReason && <p className="text-xs text-gray-500">Reason: “{appt.cancelReason}”</p>}
+          {appt.cancelReason && <p className="text-xs text-ink-200">Reason: “{appt.cancelReason}”</p>}
         </div>
         {canCancel && appt.status === 'confirmed' && !confirming && (
           <div className="sm:self-start">
@@ -78,9 +78,9 @@ export const AppointmentItem =({ appt, canCancel, cancelPath, onChanged }) => {
         )}
       </div>
       {confirming && (
-        <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
+        <div className="mt-4 space-y-2 border-t border-white/[0.08] pt-4">
           {error && <Alert>{error}</Alert>}
-          <label htmlFor={`cancel-${appt.id}`} className="block text-sm font-medium text-[#263646]">
+          <label htmlFor={`cancel-${appt.id}`} className="block text-sm font-medium text-ink-100">
             Message for {appt.name} (optional)
           </label>
           <input
@@ -95,7 +95,7 @@ export const AppointmentItem =({ appt, canCancel, cancelPath, onChanged }) => {
             <ActionButton icon={CalendarX} danger busy={busy} onClick={cancel}>
               Cancel and notify {appt.name.split(' ')[0]}
             </ActionButton>
-            <button type="button" onClick={() => setConfirming(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-gray-600 hover:text-[#263646]">
+            <button type="button" onClick={() => setConfirming(false)} className="rounded-full px-3.5 py-2 text-sm font-semibold text-ink-200 hover:bg-white/[0.05] hover:text-ink-50 transition-colors">
               Keep it
             </button>
           </div>
@@ -131,7 +131,7 @@ const AppointmentsList = ({ endpoint, cancelPath, title = 'Appointments' }) => {
       title={title}
       description={scope === 'upcoming' ? `${state.upcomingConfirmed} upcoming confirmed` : 'Most recent first'}
       action={
-        <div className="flex gap-1 bg-[#F8F9FA] border border-gray-100 rounded-xl p-1">
+        <div className="flex gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
           {['upcoming', 'past'].map((s) => (
             <button
               key={s}
@@ -141,7 +141,7 @@ const AppointmentsList = ({ endpoint, cancelPath, title = 'Appointments' }) => {
                 setState((st) => ({ ...st, status: 'loading' }));
               }}
               aria-pressed={scope === s}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium capitalize transition-colors ${scope === s ? 'bg-[#263646] text-white' : 'text-gray-600 hover:text-[#263646]'}`}
+              className={`rounded-full px-3.5 py-1.5 text-sm font-semibold capitalize transition-colors ${scope === s ? 'bg-sage-300 text-ink-950' : 'text-ink-200 hover:bg-white/[0.05] hover:text-ink-50'}`}
             >
               {s}
             </button>
@@ -152,11 +152,11 @@ const AppointmentsList = ({ endpoint, cancelPath, title = 'Appointments' }) => {
       {state.status === 'error' && <Alert>{state.error}</Alert>}
       {state.status === 'loading' && (
         <div className="flex justify-center py-8">
-          <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+          <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
         </div>
       )}
       {state.status === 'ready' && state.items.length === 0 && (
-        <p className="rounded-2xl border border-dashed border-gray-200 p-8 text-center text-sm text-gray-500">
+        <p className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-sm text-ink-200">
           {scope === 'upcoming' ? 'No upcoming appointments yet.' : 'No past appointments.'}
         </p>
       )}

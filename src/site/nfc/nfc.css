@@ -1,0 +1,101 @@
+/* NFC cards landing page: foil, QR, scan and reader-field effects for the demo mockups. */
+
+/* Freeze every CSS animation inside a mockup while it is off screen. */
+.nfc-paused,
+.nfc-paused *,
+.nfc-paused ::before,
+.nfc-paused ::after {
+  animation-play-state: paused !important;
+}
+
+/* Holographic foil on the APV card. */
+.nfc-foil-spin {
+  will-change: transform;
+  animation: 16s linear infinite nfc-spin;
+}
+
+.nfc-foil-spin-fast {
+  will-change: transform;
+  animation: 7s linear infinite nfc-spin;
+}
+
+@keyframes nfc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nfc-foil-band {
+  -webkit-mask-image: linear-gradient(118deg, #0000 18%, #000 42% 58%, #0000 82%);
+  mask-image: linear-gradient(118deg, #0000 18%, #000 42% 58%, #0000 82%);
+}
+
+/* Outlined audience marquee row. */
+.nfc-outline {
+  color: #0000;
+  -webkit-text-stroke: 1.5px #8c9dae8c;
+}
+
+@supports not (-webkit-text-stroke: 1px #000) {
+  .nfc-outline {
+    color: #8c9dae66;
+  }
+}
+
+/* QR modules pop in from the centre outwards (each <rect> sets --nfc-d). */
+.nfc-qr .nfc-qr-px {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50%;
+  transition:
+    opacity 0.32s var(--ease-out-expo),
+    transform 0.55s var(--ease-out-expo);
+  transition-delay: var(--nfc-d, 0s);
+  transform: scale(0.15);
+}
+
+.nfc-qr[data-on='true'] .nfc-qr-px {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Scanner line sweeping over the QR code. */
+.nfc-scan {
+  animation: nfc-scan 3.2s var(--ease-in-out-quint) infinite;
+}
+
+@keyframes nfc-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(1000%);
+  }
+}
+
+/* Expanding NFC reader field rings. */
+.nfc-field-ring {
+  animation: nfc-field 4.8s var(--ease-out-quart) infinite;
+}
+
+@keyframes nfc-field {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

@@ -50,7 +50,7 @@ const ChangePassword = () => {
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-2.5 font-semibold text-[#263646] hover:border-[#263646] disabled:opacity-60 transition-colors"
+          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2.5 font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-60 disabled:hover:border-white/10 disabled:hover:bg-white/[0.03] transition-colors"
         >
           {busy ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <KeyRound size={16} aria-hidden="true" />}
           Update password
@@ -86,31 +86,31 @@ const DashboardPage = () => {
   const upload = async (file, kind) => (await uploadImage('/api/me/upload', file, kind)).url;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="MY DIGITAL CARD" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <DashboardNav />
         {welcome && (
-          <div className="flex items-start gap-3 rounded-2xl border border-[#94A378]/40 bg-[#94A378]/10 p-4 text-[#263646]">
-            <PartyPopper size={22} className="text-[#94A378] flex-shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="flex items-start gap-3 rounded-2xl border border-sage-300/30 bg-sage-300/10 p-4 text-ink-50">
+            <PartyPopper size={22} className="text-sage-300 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <div className="flex-1">
-              <p className="font-bold">Your account is active!</p>
-              <p className="text-sm text-gray-700">Complete your profile below and hit “Save changes”. Your NFC card updates instantly — no need to reprogram it.</p>
+              <p className="font-semibold text-ink-50">Your account is active!</p>
+              <p className="text-sm text-ink-100 mt-0.5">Complete your profile below and hit “Save changes”. Your NFC card updates instantly — no need to reprogram it.</p>
             </div>
-            <button type="button" onClick={() => setParams({}, { replace: true })} className="text-sm font-semibold text-[#263646] hover:underline">
+            <button type="button" onClick={() => setParams({}, { replace: true })} className="flex-shrink-0 rounded-full px-3 py-1.5 -my-1 text-sm font-semibold text-sage-200 transition-colors hover:bg-sage-300/10 hover:text-sage-100">
               Got it
             </button>
           </div>
         )}
 
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">Hi{user?.name ? `, ${user.name.split(' ')[0]}` : ''}</h1>
-          <p className="text-gray-600">This is what people see when they tap your card.</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">Hi{user?.name ? `, ${user.name.split(' ')[0]}` : ''}</h1>
+          <p className="text-ink-200 mt-1">This is what people see when they tap your card.</p>
         </div>
 
         {state.status === 'loading' && (
-          <div className="flex items-center gap-3 text-gray-500 py-12 justify-center">
-            <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" /> Loading your card…
+          <div className="flex items-center gap-3 text-ink-200 py-12 justify-center">
+            <Loader2 className="animate-spin text-sage-300" aria-hidden="true" /> Loading your card…
           </div>
         )}
 
@@ -125,12 +125,12 @@ const DashboardPage = () => {
                 title="Your card link"
                 description="This link is stored in your NFC card. Share it or use the QR code anywhere."
               />
-              <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col justify-center">
-                <div className="flex items-center gap-2 text-gray-500 text-sm">
-                  <BarChart3 size={16} className="text-[#94A378]" aria-hidden="true" /> Profile views
+              <div className="surface rounded-3xl p-5 flex flex-col justify-center">
+                <div className="flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink-200">
+                  <BarChart3 size={16} className="text-sage-300" aria-hidden="true" /> Profile views
                 </div>
-                <p className="text-4xl font-bold text-[#263646] mt-1">{state.card.views.toLocaleString()}</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="nums text-4xl font-semibold tracking-[-0.03em] text-ink-50 mt-2">{state.card.views.toLocaleString()}</p>
+                <p className="text-xs text-ink-200 mt-1">
                   {state.card.lastViewedAt ? `Last view ${new Date(state.card.lastViewedAt).toLocaleString()}` : 'No views yet'}
                 </p>
               </div>

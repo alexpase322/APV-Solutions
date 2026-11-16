@@ -10,16 +10,16 @@ import { inviteWhatsappHref } from '../../lib/nfc';
 const InviteLinkBox = ({ name, inviteUrl, email, kind = 'client' }) => {
   const who = kind === 'reseller' ? 'reseller' : 'client';
   return (
-    <div className="rounded-2xl border border-gray-100 bg-[#F8F9FA] p-4 space-y-3">
-      <p className="text-sm font-semibold text-[#263646]">Activation link for the {who}</p>
-      <p className="font-mono text-xs break-all bg-white rounded-lg border border-gray-100 px-3 py-2 text-gray-600">{inviteUrl}</p>
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4 space-y-3">
+      <p className="text-sm font-semibold text-ink-50">Activation link for the {who}</p>
+      <p className="font-mono text-xs break-all rounded-xl border border-white/[0.08] bg-ink-900/60 px-3 py-2 text-ink-100">{inviteUrl}</p>
       <div className="flex flex-wrap gap-2">
         <CopyButton value={inviteUrl} label="Copy invite link" />
         <a
           href={inviteWhatsappHref(name, inviteUrl, kind)}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-2 text-sm font-semibold text-[#0b3d1f] hover:bg-[#1eb457] transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-[#0b3d1f] hover:bg-[#1eb457] transition-colors"
         >
           <MessageCircle size={15} aria-hidden="true" /> Send by WhatsApp
         </a>

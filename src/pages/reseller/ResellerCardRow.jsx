@@ -34,10 +34,10 @@ const RequestChange = ({ card, onSent }) => {
   };
 
   return (
-    <form onSubmit={submit} className="space-y-3 rounded-xl border border-gray-100 bg-[#F8F9FA] p-4">
+    <form onSubmit={submit} className="space-y-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4">
       <div>
-        <p className="font-semibold text-[#263646]">Request a change from APV</p>
-        <p className="text-xs text-gray-500">To turn this product off, back on, or remove the client, send a request. APV applies it after review.</p>
+        <p className="font-semibold text-ink-50">Request a change from APV</p>
+        <p className="text-xs text-ink-200">To turn this product off, back on, or remove the client, send a request. APV applies it after review.</p>
       </div>
       {msg && <Alert kind={msg.kind}>{msg.text}</Alert>}
       <div className="grid sm:grid-cols-[220px_minmax(0,1fr)] gap-3">
@@ -92,19 +92,19 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
   };
 
   return (
-    <li className="bg-white rounded-2xl border border-gray-100">
+    <li className="surface rounded-3xl">
       <div className="p-4 flex flex-col md:flex-row md:items-center gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div
-            className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 overflow-hidden"
+            className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 overflow-hidden ring-1 ring-white/10"
             style={{ backgroundColor: card.profile?.accentColor || '#263646' }}
             aria-hidden="true"
           >
             {card.profile?.avatarUrl ? <img src={card.profile.avatarUrl} alt="" className="w-full h-full object-cover" /> : initials(name)}
           </div>
           <div className="min-w-0">
-            <p className="font-semibold text-[#263646] truncate">{name}</p>
-            <p className="text-sm text-gray-500 truncate">{card.owner?.email}</p>
+            <p className="font-semibold text-ink-50 truncate">{name}</p>
+            <p className="text-sm text-ink-200 truncate">{card.owner?.email}</p>
             <p className="mt-1 text-xs">
               <ProductBadges card={card} />
             </p>
@@ -112,12 +112,12 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
         </div>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-          <span className="font-mono text-xs bg-[#F8F9FA] border border-gray-100 rounded px-2 py-1 text-[#263646]">{card.code}</span>
+          <span className="font-mono text-xs rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-ink-100">{card.code}</span>
           <StatusBadge status={cardStatus(card)} />
-          <span className="inline-flex items-center gap-1 text-gray-500" title="Profile views">
+          <span className="nums inline-flex items-center gap-1 text-ink-200" title="Profile views">
             <Eye size={14} aria-hidden="true" /> {card.views}
           </span>
-          <span className="text-gray-500 hidden lg:inline">{new Date(card.createdAt).toLocaleDateString()}</span>
+          <span className="text-ink-200 hidden lg:inline">{new Date(card.createdAt).toLocaleDateString()}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
             <Link
               to={`/reseller/cards/${card.id}`}
               aria-label={`Fill in profile of ${name}`}
-              className="inline-flex items-center justify-center rounded-lg border border-gray-200 p-2 text-[#263646] hover:border-[#263646] transition-colors"
+              className="inline-flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
             >
               <Pencil size={16} aria-hidden="true" />
             </Link>
@@ -135,7 +135,9 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-[#263646] hover:border-[#263646] transition-colors"
+            className={`inline-flex items-center gap-1 rounded-full border px-3.5 py-2 text-sm font-semibold text-ink-50 transition-colors ${
+              open ? 'border-white/25 bg-white/[0.07]' : 'border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.07]'
+            }`}
           >
             More {open ? <ChevronUp size={15} aria-hidden="true" /> : <ChevronDown size={15} aria-hidden="true" />}
           </button>
@@ -143,7 +145,7 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
       </div>
 
       {open && (
-        <div className="border-t border-gray-100 p-4 space-y-4">
+        <div className="border-t border-white/[0.08] p-4 space-y-4">
           <Alert>{error}</Alert>
           <CardLinkBox url={url} code={card.code} title="NFC link to program" compact />
           <ProductsEditor
@@ -160,7 +162,7 @@ const ResellerCardRow = ({ card, stock, onChanged, onRequestSent }) => {
               <InviteLinkBox name={card.owner?.name} inviteUrl={invite.inviteUrl} email={invite.email} />
             ) : (
               <div className="flex flex-wrap items-center gap-3">
-                <p className="text-sm text-gray-600">The client hasn't activated their account yet.</p>
+                <p className="text-sm text-ink-100">The client hasn't activated their account yet.</p>
                 <ActionButton icon={Mail} busy={busy} onClick={resendInvite}>
                   Send new activation link
                 </ActionButton>

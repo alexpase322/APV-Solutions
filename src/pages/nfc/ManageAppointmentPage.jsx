@@ -43,9 +43,10 @@ const ManageAppointmentPage = () => {
   };
 
   const shell = (children) => (
-    <main className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-gray-100 shadow-xl p-6 sm:p-8">{children}</div>
-      <Link to="/nfc" className="mt-6 text-xs text-gray-500 hover:text-[#263646]">
+    <main className="relative isolate min-h-screen overflow-hidden bg-ink-900 text-ink-50 flex flex-col items-center justify-center px-4 py-12">
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-grid opacity-50 mask-radial" />
+      <div className="w-full max-w-md surface rounded-4xl p-6 sm:p-8">{children}</div>
+      <Link to="/nfc" className="mt-6 rounded-md text-xs text-ink-200 transition-colors hover:text-ink-50">
         Powered by <span className="font-bold">APV</span> Business Solutions
       </Link>
     </main>
@@ -54,7 +55,7 @@ const ManageAppointmentPage = () => {
   if (state.status === 'loading') {
     return shell(
       <div className="flex justify-center py-8">
-        <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+        <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
       </div>
     );
   }
@@ -62,8 +63,8 @@ const ManageAppointmentPage = () => {
   if (state.status === 'invalid') {
     return shell(
       <div className="text-center space-y-3">
-        <h1 className="text-2xl font-bold text-[#263646]">Appointment not found</h1>
-        <p className="text-gray-600">{state.error || 'This link is missing information.'} Please use the link from your confirmation email.</p>
+        <h1 className="text-2xl font-semibold tracking-[-0.03em] text-ink-50">Appointment not found</h1>
+        <p className="text-ink-200">{state.error || 'This link is missing information.'} Please use the link from your confirmation email.</p>
       </div>
     );
   }
@@ -79,35 +80,35 @@ const ManageAppointmentPage = () => {
     <div className="space-y-5">
       <div className="flex items-center gap-3">
         {card?.avatarUrl ? (
-          <img src={card.avatarUrl} alt="" className="w-14 h-14 rounded-full object-cover" />
+          <img src={card.avatarUrl} alt="" className="w-14 h-14 rounded-full object-cover ring-1 ring-white/10" />
         ) : (
-          <div className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg" style={{ backgroundColor: accent, color: readableOn(accent) }} aria-hidden="true">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg ring-1 ring-white/10" style={{ backgroundColor: accent, color: readableOn(accent) }} aria-hidden="true">
             {initials(card?.ownerName || '')}
           </div>
         )}
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Appointment with</p>
-          <p className="text-lg font-bold text-[#263646] truncate">{card?.ownerName || 'APV card owner'}</p>
+          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink-200">Appointment with</p>
+          <p className="mt-0.5 text-lg font-semibold tracking-[-0.02em] text-ink-50 truncate">{card?.ownerName || 'APV card owner'}</p>
         </div>
       </div>
 
-      <div className={`rounded-2xl border p-4 ${cancelled ? 'border-gray-200 bg-gray-50' : 'border-[#94A378]/40 bg-[#94A378]/10'}`}>
-        <p className="flex items-center gap-2 text-sm font-bold text-[#263646]">
+      <div className={`rounded-2xl border p-4 ${cancelled ? 'border-white/[0.08] bg-white/[0.03]' : 'border-sage-300/30 bg-sage-300/10'}`}>
+        <p className={`flex items-center gap-2 text-sm font-semibold ${cancelled ? 'text-ink-100' : 'text-sage-100'}`}>
           {cancelled ? <CalendarX size={16} aria-hidden="true" /> : <CalendarCheck size={16} aria-hidden="true" />}
           {cancelled ? `Cancelled${a.cancelledBy === 'owner' ? ' by the host' : ''}` : past ? 'Completed' : 'Confirmed'}
         </p>
-        <p className={`mt-2 text-lg font-bold ${cancelled ? 'text-gray-500 line-through' : 'text-[#263646]'}`}>{formatDateLong(a.start, tz)}</p>
-        <p className="text-sm text-gray-600">
+        <p className={`mt-2 text-lg font-semibold tracking-[-0.02em] ${cancelled ? 'text-ink-200 line-through' : 'text-ink-50'}`}>{formatDateLong(a.start, tz)}</p>
+        <p className="text-sm text-ink-100">
           {formatTime(a.start, tz)} – {formatTime(a.end, tz)} · {timeZoneLabel(tz)}
         </p>
-        <p className="mt-2 text-sm text-gray-700">
+        <p className="mt-2 text-sm text-ink-100">
           {a.title} · <loc.icon size={13} className="inline -mt-0.5" aria-hidden="true" /> {loc.label}
         </p>
-        {a.locationDetails && !cancelled && <p className="text-sm text-gray-700 mt-1">{a.locationDetails}</p>}
+        {a.locationDetails && !cancelled && <p className="text-sm text-ink-100 mt-1">{a.locationDetails}</p>}
       </div>
 
       {error && (
-        <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">
           {error}
         </p>
       )}
@@ -115,7 +116,7 @@ const ManageAppointmentPage = () => {
       {!cancelled && !past &&
         (confirming ? (
           <div className="space-y-2">
-            <label htmlFor="cancel-reason" className="block text-sm font-medium text-[#263646]">
+            <label htmlFor="cancel-reason" className="block text-sm font-medium text-ink-100">
               Reason (optional)
             </label>
             <input
@@ -123,18 +124,18 @@ const ManageAppointmentPage = () => {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               maxLength={300}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-[#263646] outline-none focus:border-[#94A378] focus:ring-2 focus:ring-[#94A378]/20"
+              className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-ink-900/60 text-ink-50 placeholder:text-ink-300 outline-none transition-all focus:border-sage-300/60 focus:ring-2 focus:ring-sage-300/20"
             />
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={cancel}
                 disabled={busy}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 font-bold text-white hover:bg-red-700 disabled:opacity-60"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-4 py-3 font-semibold text-white hover:bg-red-500/90 disabled:opacity-60 disabled:hover:bg-red-600 transition-colors"
               >
                 {busy && <Loader2 size={16} className="animate-spin" aria-hidden="true" />} Yes, cancel it
               </button>
-              <button type="button" onClick={() => setConfirming(false)} className="rounded-xl border border-gray-200 px-4 py-3 font-semibold text-[#263646]">
+              <button type="button" onClick={() => setConfirming(false)} className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-3 font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors">
                 Keep it
               </button>
             </div>
@@ -143,7 +144,7 @@ const ManageAppointmentPage = () => {
           <button
             type="button"
             onClick={() => setConfirming(true)}
-            className="w-full rounded-xl border border-red-200 px-4 py-3 font-semibold text-red-700 hover:bg-red-50"
+            className="w-full rounded-full border border-red-400/30 px-4 py-3 font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10 transition-colors"
           >
             Cancel appointment
           </button>
@@ -152,7 +153,7 @@ const ManageAppointmentPage = () => {
       {card?.code && (
         <Link
           to={`/c/${card.code}`}
-          className="block w-full rounded-xl px-4 py-3 text-center font-semibold"
+          className="block w-full rounded-full px-4 py-3 text-center font-semibold ring-1 ring-inset ring-white/15"
           style={{ backgroundColor: accent, color: readableOn(accent) }}
         >
           {cancelled ? 'Book another time' : `View ${card.ownerName?.split(' ')[0] || 'their'}'s card`}

@@ -40,7 +40,7 @@ const LoginPage = () => {
       footer={
         <>
           Don't have a card yet?{' '}
-          <Link to="/nfc" className="font-semibold text-[#94A378] hover:underline">
+          <Link to="/nfc" className="font-semibold text-sage-300 underline-offset-4 hover:text-sage-200 hover:underline transition-colors">
             Get yours
           </Link>
         </>
@@ -63,14 +63,14 @@ const LoginPage = () => {
           <PasswordInput id="login-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </Field>
         <div className="text-right">
-          <Link to="/forgot-password" className="text-sm font-medium text-[#94A378] hover:underline">
+          <Link to="/forgot-password" className="text-sm font-medium text-sage-300 underline-offset-4 hover:text-sage-200 hover:underline transition-colors">
             Forgot your password?
           </Link>
         </div>
         <button
           type="submit"
           disabled={busy}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] py-3.5 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 py-3.5 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-60 disabled:hover:bg-sage-300 transition-colors"
         >
           {busy ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <LogIn size={18} aria-hidden="true" />}
           {busy ? 'Logging in…' : 'Log in'}

@@ -15,5 +15,18 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    build: {
+      rollupOptions: {
+        output: {
+          // Long-lived vendor chunks: they rarely change between deploys, so browsers keep them cached
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return undefined
+            if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom)[\\/]/.test(id)) return 'react'
+            if (/[\\/]node_modules[\\/](motion|motion-dom|motion-utils|framer-motion|lenis)[\\/]/.test(id)) return 'motion'
+            return undefined
+          },
+        },
+      },
+    },
   }
 })

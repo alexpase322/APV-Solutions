@@ -36,16 +36,16 @@ const ResellerCardEditPage = () => {
   const editable = card?.owner?.status === 'invited';
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-ink-900">
       <AppHeader subtitle="RESELLER PANEL" />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <Link to="/reseller" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#263646] hover:text-[#94A378]">
-          <ArrowLeft size={16} aria-hidden="true" /> Back to my clients
+        <Link to="/reseller" className="group inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-ink-50 hover:text-sage-300 transition-colors">
+          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" /> Back to my clients
         </Link>
 
         {state.status === 'loading' && (
           <div className="flex justify-center py-12">
-            <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+            <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
           </div>
         )}
         {state.status === 'error' && <Alert>{state.error}</Alert>}
@@ -53,7 +53,7 @@ const ResellerCardEditPage = () => {
         {card && (
           <>
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#263646]">{card.profile.fullName || 'Unnamed client'}</h1>
+              <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-ink-50">{card.profile.fullName || 'Unnamed client'}</h1>
               <StatusBadge status={cardStatus(card)} />
               <span className="text-xs">
                 <ProductBadges card={card} />

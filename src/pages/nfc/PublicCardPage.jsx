@@ -57,13 +57,22 @@ const PublicCardPage = () => {
     };
   }, [code]);
 
-  const pageClass = `${dark ? 'dark' : ''} min-h-screen bg-[#F8F9FA] dark:bg-[#0b1119]`;
+  /*
+   * The card follows the client's theme, not the site's. <html class="apv-site"> sets light text, a dark
+   * color-scheme and dark autofill colors globally, so pin what the card was designed against:
+   * navy text + light controls on a light card, light text + dark controls at night, and the browser's own
+   * autofill colors in the booking form.
+   */
+  const pageClass = `${dark ? 'dark' : ''} min-h-screen bg-[#F8F9FA] dark:bg-[#0b1119] text-[#263646] dark:text-gray-100 [color-scheme:light] dark:[color-scheme:dark] [&_:is(input,textarea):autofill]:[-webkit-text-fill-color:currentColor] [&_:is(input,textarea):autofill]:[caret-color:auto] [&_:is(input,textarea):autofill]:shadow-none`;
+
+  // Loading / error screens are APV chrome (dark), not the client's card
+  const chromeClass = 'relative isolate min-h-screen overflow-hidden bg-ink-900 text-ink-50';
 
   if (state.status === 'loading') {
     return (
-      <main className={`${pageClass} flex flex-col items-center justify-center gap-3 px-6 text-center`}>
-        <Loader2 className="animate-spin text-[#94A378]" size={36} aria-hidden="true" />
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+      <main className={`${chromeClass} flex flex-col items-center justify-center gap-3 px-6 text-center`}>
+        <Loader2 className="animate-spin text-sage-300" size={36} aria-hidden="true" />
+        <p className="text-sm text-ink-200">
           {state.slow ? 'Opening card… this can take a few seconds.' : 'Opening card…'}
         </p>
       </main>
@@ -72,19 +81,23 @@ const PublicCardPage = () => {
 
   if (state.status !== 'ready') {
     return (
-      <main className={`${pageClass} flex flex-col items-center justify-center px-6 text-center`}>
-        <div className="w-16 h-16 rounded-2xl bg-[#263646] text-[#E4B34C] flex items-center justify-center mb-6 dark:ring-1 dark:ring-white/15">
+      <main className={`${chromeClass} flex flex-col items-center justify-center px-6 text-center`}>
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-grid opacity-50 mask-radial" />
+        <div className="w-16 h-16 rounded-2xl border border-gold-400/25 bg-gold-400/[0.08] text-gold-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] flex items-center justify-center mb-6">
           <CreditCard size={30} aria-hidden="true" />
         </div>
-        <h1 className="text-2xl font-bold mb-2 text-[#263646] dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-2 text-ink-50">
           {state.status === 'notfound' ? 'Card not available' : 'Something went wrong'}
         </h1>
-        <p className="max-w-sm mb-8 text-gray-600 dark:text-gray-300">
+        <p className="max-w-sm mb-8 text-ink-200">
           {state.status === 'notfound'
             ? 'This card does not exist or has been deactivated.'
             : 'We could not load this card. Please check your connection and try again.'}
         </p>
-        <Link to="/nfc" className="text-[#94A378] font-semibold hover:underline">
+        <Link
+          to="/nfc"
+          className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-sage-300 transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-sage-200"
+        >
           Get your own APV digital card
         </Link>
       </main>

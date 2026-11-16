@@ -26,7 +26,7 @@ const ForgotPasswordPage = () => {
   };
 
   const back = (
-    <Link to="/login" className="font-semibold text-[#94A378] hover:underline">
+    <Link to="/login" className="font-semibold text-sage-300 underline-offset-4 hover:text-sage-200 hover:underline transition-colors">
       Back to log in
     </Link>
   );
@@ -35,11 +35,11 @@ const ForgotPasswordPage = () => {
     return (
       <AuthLayout pageTitle="Reset password" title="Check your email" footer={back}>
         <div className="flex flex-col items-center text-center gap-4 py-2">
-          <div className="w-14 h-14 rounded-full bg-[#94A378]/15 text-[#94A378] flex items-center justify-center">
+          <div className="size-14 rounded-2xl border border-sage-300/20 bg-sage-300/[0.08] text-sage-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] flex items-center justify-center">
             <MailCheck size={28} aria-hidden="true" />
           </div>
-          <p className="text-gray-600">
-            If <strong className="text-[#263646]">{email}</strong> is registered, you'll receive a link in a few minutes.
+          <p className="leading-relaxed text-ink-100">
+            If <strong className="font-semibold text-ink-50 break-all">{email}</strong> is registered, you'll receive a link in a few minutes.
             Remember to check your spam folder.
           </p>
         </div>
@@ -70,7 +70,7 @@ const ForgotPasswordPage = () => {
         <button
           type="submit"
           disabled={busy}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] py-3.5 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 py-3.5 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-60 disabled:hover:bg-sage-300 transition-colors"
         >
           {busy && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
           {busy ? 'Sending…' : 'Send reset link'}

@@ -51,7 +51,7 @@ const ActivatePage = () => {
     return (
       <AuthLayout pageTitle="Activate account" title="Checking your invitation…">
         <div className="flex justify-center py-6">
-          <Loader2 className="animate-spin text-[#94A378]" size={28} aria-hidden="true" />
+          <Loader2 className="animate-spin text-sage-300" size={28} aria-hidden="true" />
         </div>
       </AuthLayout>
     );
@@ -64,18 +64,18 @@ const ActivatePage = () => {
         title="Link not valid"
         subtitle={invite.error || 'This activation link is missing or has expired.'}
         footer={
-          <Link to="/login" className="font-semibold text-[#94A378] hover:underline">
+          <Link to="/login" className="font-semibold text-sage-300 underline-offset-4 hover:text-sage-200 hover:underline transition-colors">
             Go to log in
           </Link>
         }
       >
-        <p className="text-sm text-gray-600">
-          Already activated? Just log in. Otherwise use <strong>Forgot password</strong> with your email and we'll send you a
+        <p className="text-sm leading-relaxed text-ink-100">
+          Already activated? Just log in. Otherwise use <strong className="font-semibold text-ink-50">Forgot password</strong> with your email and we'll send you a
           fresh activation link, or contact APV Business Solutions.
         </p>
         <Link
           to="/forgot-password"
-          className="mt-6 w-full inline-flex items-center justify-center rounded-xl bg-[#263646] py-3.5 font-bold text-white hover:bg-[#94A378] transition-colors"
+          className="mt-6 w-full inline-flex items-center justify-center rounded-full bg-sage-300 py-3.5 font-semibold text-ink-950 hover:bg-sage-200 transition-colors"
         >
           Send me a new link
         </Link>
@@ -95,15 +95,15 @@ const ActivatePage = () => {
     >
       <form onSubmit={submit} className="space-y-4">
         <Alert>{error}</Alert>
-        <div className="rounded-xl bg-[#F8F9FA] px-4 py-3 text-sm">
-          <span className="text-gray-500">Account: </span>
-          <span className="font-semibold text-[#263646]">{invite.email}</span>
+        <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-sm">
+          <span className="text-ink-200">Account: </span>
+          <span className="font-semibold text-ink-50 break-all">{invite.email}</span>
         </div>
         <NewPasswordFields password={password} confirm={confirm} setPassword={setPassword} setConfirm={setConfirm} />
         <button
           type="submit"
           disabled={busy}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] py-3.5 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 py-3.5 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-60 disabled:hover:bg-sage-300 transition-colors"
         >
           {busy && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
           {busy ? 'Activating…' : invite.role === 'reseller' ? 'Activate my reseller account' : 'Activate my card'}

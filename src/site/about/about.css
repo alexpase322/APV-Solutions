@@ -1,0 +1,68 @@
+/* About page: light pulses along the bridge/vision paths, off-screen pausing and outlined type. */
+
+/* A short dash that flows along a path drawn with pathLength="1". Tune with --about-dur / --about-delay. */
+.about-pulse {
+  stroke-dasharray: 0.06 2;
+  stroke-dashoffset: 0.06px;
+  animation: about-flow var(--about-dur, 3.6s) linear var(--about-delay, 0s) infinite;
+}
+
+.about-pulse-rev {
+  animation-name: about-flow-rev;
+}
+
+@keyframes about-flow {
+  0% {
+    stroke-dashoffset: 0.06px;
+  }
+  to {
+    stroke-dashoffset: -1px;
+  }
+}
+
+@keyframes about-flow-rev {
+  0% {
+    stroke-dashoffset: -1px;
+  }
+  to {
+    stroke-dashoffset: 0.06px;
+  }
+}
+
+/* A round "traveller" that eases back and forth along the whole path. */
+.about-travel {
+  stroke-dasharray: 0.0001 3;
+  stroke-dashoffset: 0;
+  animation: about-travel var(--about-dur, 4.4s) cubic-bezier(0.65, 0, 0.35, 1) var(--about-delay, 0s) infinite alternate;
+}
+
+@keyframes about-travel {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1px;
+  }
+}
+
+/* Visuals add .about-paused while off-screen so their CSS loops stop. */
+.about-paused .about-pulse,
+.about-paused .about-travel,
+.about-paused .animate-dash,
+.about-paused .animate-pulse-ring,
+.about-paused .animate-spin-slow,
+.about-paused .animate-blink,
+.about-paused .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Outlined numerals / words. */
+.about-outline {
+  color: #0000;
+  -webkit-text-stroke: 1px #b4c68f80;
+}
+
+.about-outline-ink {
+  color: #0000;
+  -webkit-text-stroke: 1px #eaf0f529;
+}

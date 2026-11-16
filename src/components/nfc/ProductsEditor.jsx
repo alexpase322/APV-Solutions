@@ -40,10 +40,10 @@ const ProductsEditor = ({ card, onAdd, onRemove, stock }) => {
   };
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-[#F8F9FA] p-4 space-y-3">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4 space-y-3">
       <div>
-        <p className="font-semibold text-[#263646]">Products with this link</p>
-        <p className="text-xs text-gray-500">Program the same NFC link on every product the client bought.</p>
+        <p className="font-semibold text-ink-50">Products with this link</p>
+        <p className="text-xs text-ink-200">Program the same NFC link on every product the client bought.</p>
       </div>
       {msg && <Alert kind={msg.kind}>{msg.text}</Alert>}
 
@@ -51,9 +51,9 @@ const ProductsEditor = ({ card, onAdd, onRemove, stock }) => {
         {products.map((p) => {
           const product = productById(p.type);
           return (
-            <li key={p.type} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white pl-3 pr-1 py-1 text-sm text-[#263646]">
-              <product.icon size={16} aria-hidden="true" />
-              <span className="font-semibold">
+            <li key={p.type} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] pl-3 pr-1 py-1 text-sm text-ink-50">
+              <product.icon size={16} className="text-sage-300" aria-hidden="true" />
+              <span className="nums font-semibold">
                 {p.qty} × {product.label}
               </span>
               {onRemove && products.length > 1 ? (
@@ -62,7 +62,7 @@ const ProductsEditor = ({ card, onAdd, onRemove, stock }) => {
                   onClick={() => remove(p)}
                   disabled={!!busy}
                   aria-label={`Remove ${product.label}`}
-                  className="rounded-md p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 disabled:opacity-40 transition-colors"
+                  className="rounded-full p-1.5 text-ink-200 hover:text-red-300 hover:bg-red-500/10 disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink-200 transition-colors"
                 >
                   <Trash2 size={14} aria-hidden="true" />
                 </button>
@@ -75,10 +75,10 @@ const ProductsEditor = ({ card, onAdd, onRemove, stock }) => {
       </ul>
 
       {options.length === 0 ? (
-        <p className="text-xs text-gray-500">No units in stock to add more products.</p>
+        <p className="text-xs text-ink-200">No units in stock to add more products.</p>
       ) : (
         <div className="flex flex-wrap items-end gap-2">
-          <label className="text-sm text-[#263646]">
+          <label className="text-sm text-ink-100">
             <span className="block mb-1 font-medium">Add product</span>
             <select
               className={selectClass}
@@ -96,14 +96,14 @@ const ProductsEditor = ({ card, onAdd, onRemove, stock }) => {
               ))}
             </select>
           </label>
-          <div className="inline-flex items-center rounded-xl border border-gray-200 bg-white" role="group" aria-label="Quantity to add">
-            <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} aria-label="Less" className="p-2.5 text-[#263646] disabled:opacity-30">
+          <div className="inline-flex items-center rounded-full border border-white/10 bg-ink-900/60 p-0.5" role="group" aria-label="Quantity to add">
+            <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} aria-label="Less" className="rounded-full p-2 text-ink-50 transition-colors hover:bg-white/[0.07] disabled:opacity-30 disabled:hover:bg-transparent">
               <Minus size={14} aria-hidden="true" />
             </button>
-            <span className="w-6 text-center text-sm font-bold text-[#263646]" aria-live="polite">
+            <span className="nums w-6 text-center text-sm font-bold text-ink-50" aria-live="polite">
               {qty}
             </span>
-            <button type="button" onClick={() => setQty((q) => Math.min(max, q + 1))} disabled={qty >= max} aria-label="More" className="p-2.5 text-[#263646] disabled:opacity-30">
+            <button type="button" onClick={() => setQty((q) => Math.min(max, q + 1))} disabled={qty >= max} aria-label="More" className="rounded-full p-2 text-ink-50 transition-colors hover:bg-white/[0.07] disabled:opacity-30 disabled:hover:bg-transparent">
               <Plus size={14} aria-hidden="true" />
             </button>
           </div>

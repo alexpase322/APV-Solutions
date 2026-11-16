@@ -51,7 +51,7 @@ const BookingSettings = ({ endpoint }) => {
   if (!booking) {
     return (
       <div className="flex justify-center py-10">
-        <Loader2 className="animate-spin text-[#94A378]" aria-hidden="true" />
+        <Loader2 className="animate-spin text-sage-300" aria-hidden="true" />
       </div>
     );
   }
@@ -110,7 +110,7 @@ const BookingSettings = ({ endpoint }) => {
         description="Let people who tap your card book a time with you. You and they get an email for every booking."
         action={
           <label className="inline-flex items-center gap-3 cursor-pointer select-none">
-            <span className="text-sm font-semibold text-[#263646]">{booking.enabled ? 'On' : 'Off'}</span>
+            <span className="text-sm font-semibold text-ink-50">{booking.enabled ? 'On' : 'Off'}</span>
             <input
               type="checkbox"
               role="switch"
@@ -122,7 +122,7 @@ const BookingSettings = ({ endpoint }) => {
             />
             <span
               aria-hidden="true"
-              className="relative h-7 w-12 rounded-full bg-gray-300 transition-colors peer-checked:bg-[#94A378] peer-focus-visible:ring-2 peer-focus-visible:ring-[#94A378]/40 after:absolute after:top-1 after:left-1 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"
+              className="relative h-7 w-12 rounded-full bg-ink-600 inset-ring inset-ring-white/10 transition-colors peer-checked:bg-sage-300 peer-checked:inset-ring-sage-200/40 peer-focus-visible:ring-2 peer-focus-visible:ring-sage-300/70 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-ink-800 after:absolute after:top-1 after:left-1 after:h-5 after:w-5 after:rounded-full after:bg-ink-100 after:shadow-[0_1px_3px_rgba(2,6,10,0.6)] after:transition-all peer-checked:after:translate-x-5 peer-checked:after:bg-ink-950"
             />
           </label>
         }
@@ -146,13 +146,13 @@ const BookingSettings = ({ endpoint }) => {
         </Field>
 
         <fieldset>
-          <legend className="block text-sm font-medium text-[#263646] mb-2">Where</legend>
+          <legend className="block text-sm font-medium text-ink-100 mb-2">Where</legend>
           <div className="flex flex-wrap gap-2">
             {Object.entries(LOCATIONS).map(([id, l]) => (
               <label
                 key={id}
-                className={`inline-flex items-center gap-2 rounded-xl border-2 px-3 py-2 text-sm font-semibold cursor-pointer transition-colors ${
-                  booking.locationType === id ? 'border-[#263646] bg-[#263646]/5 text-[#263646]' : 'border-gray-200 text-gray-600 hover:border-gray-400'
+                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-sage-300 ${
+                  booking.locationType === id ? 'border-sage-300 bg-sage-300 text-ink-950' : 'border-white/10 bg-white/[0.03] text-ink-100 hover:border-white/25 hover:text-ink-50'
                 }`}
               >
                 <input type="radio" name="bk-location" value={id} checked={booking.locationType === id} onChange={() => set('locationType', id)} className="sr-only" />
@@ -177,44 +177,44 @@ const BookingSettings = ({ endpoint }) => {
           </select>
         </Field>
 
-        <ul className="divide-y divide-gray-100 rounded-xl border border-gray-100">
+        <ul className="divide-y divide-white/[0.06] rounded-2xl border border-white/[0.08] bg-white/[0.02]">
           {WEEKDAYS.map((w) => {
             const { intervals } = dayOf(w.day);
             const on = intervals.length > 0;
             return (
               <li key={w.day} className="flex flex-col sm:flex-row sm:items-start gap-3 p-3">
                 <label className="flex items-center gap-2 sm:w-36 sm:pt-2 cursor-pointer">
-                  <input type="checkbox" checked={on} onChange={() => toggleDay(w.day)} className="w-4 h-4 accent-[#263646]" />
-                  <span className={`text-sm font-semibold ${on ? 'text-[#263646]' : 'text-gray-500'}`}>{w.long}</span>
+                  <input type="checkbox" checked={on} onChange={() => toggleDay(w.day)} className="w-4 h-4 accent-sage-300" />
+                  <span className={`text-sm font-semibold ${on ? 'text-ink-50' : 'text-ink-200'}`}>{w.long}</span>
                 </label>
                 <div className="flex-1 space-y-2">
-                  {!on && <p className="text-sm text-gray-500 sm:pt-2">Unavailable</p>}
+                  {!on && <p className="text-sm text-ink-200 sm:pt-2">Unavailable</p>}
                   {intervals.map((iv, i) => (
-                    <div key={i} className="flex items-center gap-2">
+                    <div key={i} className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       <input
                         type="time"
                         aria-label={`${w.long} from`}
                         value={iv.start}
                         onChange={(e) => updateInterval(w.day, i, 'start', e.target.value)}
-                        className={`${inputClass} !w-auto !py-2`}
+                        className={`${inputClass} !w-auto !px-2.5 !py-2 text-sm sm:!px-4 sm:text-base`}
                         required
                       />
-                      <span className="text-gray-500 text-sm">to</span>
+                      <span className="flex-shrink-0 text-ink-200 text-sm">to</span>
                       <input
                         type="time"
                         aria-label={`${w.long} until`}
                         value={iv.end}
                         onChange={(e) => updateInterval(w.day, i, 'end', e.target.value)}
-                        className={`${inputClass} !w-auto !py-2`}
+                        className={`${inputClass} !w-auto !px-2.5 !py-2 text-sm sm:!px-4 sm:text-base`}
                         required
                       />
-                      <button type="button" onClick={() => removeInterval(w.day, i)} aria-label={`Remove ${w.long} ${iv.start}–${iv.end}`} className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50">
+                      <button type="button" onClick={() => removeInterval(w.day, i)} aria-label={`Remove ${w.long} ${iv.start}–${iv.end}`} className="flex-shrink-0 p-1.5 sm:p-2 rounded-full text-ink-200 hover:text-red-300 hover:bg-red-500/10 transition-colors">
                         <Trash2 size={15} aria-hidden="true" />
                       </button>
                     </div>
                   ))}
                   {on && intervals.length < 4 && (
-                    <button type="button" onClick={() => addInterval(w.day)} className="inline-flex items-center gap-1 text-sm font-semibold text-[#4d5a37] hover:underline">
+                    <button type="button" onClick={() => addInterval(w.day)} className="inline-flex items-center gap-1 text-sm font-semibold text-sage-200 underline-offset-4 hover:text-sage-100 hover:underline transition-colors">
                       <Plus size={14} aria-hidden="true" /> Add hours
                     </button>
                   )}
@@ -257,14 +257,14 @@ const BookingSettings = ({ endpoint }) => {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-[#263646] mb-2">Days off</p>
+          <p className="text-sm font-medium text-ink-100 mb-2">Days off</p>
           <div className="flex flex-wrap items-center gap-2">
             <input type="date" aria-label="Day off" min={today} value={blockDate} onChange={(e) => setBlockDate(e.target.value)} className={`${inputClass} !w-auto !py-2`} />
             <button
               type="button"
               onClick={addBlocked}
               disabled={!blockDate}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-[#263646] hover:border-[#263646] disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-50 disabled:hover:border-white/10 disabled:hover:bg-white/[0.03] transition-colors"
             >
               <CalendarOff size={15} aria-hidden="true" /> Block day
             </button>
@@ -272,13 +272,13 @@ const BookingSettings = ({ endpoint }) => {
           {booking.blockedDates.length > 0 && (
             <ul className="mt-3 flex flex-wrap gap-2">
               {booking.blockedDates.map((d) => (
-                <li key={d} className="inline-flex items-center gap-1 rounded-full bg-gray-100 pl-3 pr-1 py-1 text-sm text-[#263646]">
+                <li key={d} className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] pl-3 pr-1 py-1 text-sm text-ink-50">
                   {calendarDate(d, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                   <button
                     type="button"
                     onClick={() => set('blockedDates', booking.blockedDates.filter((x) => x !== d))}
                     aria-label={`Unblock ${d}`}
-                    className="rounded-full p-0.5 text-gray-500 hover:bg-gray-200 hover:text-[#263646]"
+                    className="rounded-full p-0.5 text-ink-200 hover:bg-white/10 hover:text-ink-50 transition-colors"
                   >
                     <X size={14} aria-hidden="true" />
                   </button>
@@ -289,14 +289,14 @@ const BookingSettings = ({ endpoint }) => {
         </div>
       </Section>
 
-      <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border border-gray-100 sm:rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 z-20">
+      <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-ink-850/90 backdrop-blur-xl backdrop-saturate-150 border-t sm:border border-white/[0.08] sm:rounded-2xl sm:shadow-[0_30px_60px_-30px_rgba(2,6,10,0.8)] px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 z-20">
         <div className="flex-1 min-w-0">
-          {msg ? <Alert kind={msg.kind}>{msg.text}</Alert> : <p className="text-sm text-gray-500">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>}
+          {msg ? <Alert kind={msg.kind}>{msg.text}</Alert> : <p className="text-sm text-ink-200">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>}
         </div>
         <button
           type="submit"
           disabled={saving || !dirty}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] px-6 py-3 font-bold text-white hover:bg-[#94A378] disabled:opacity-50 disabled:hover:bg-[#263646] transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 px-6 py-3 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-50 disabled:hover:bg-sage-300 transition-colors"
         >
           {saving ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Save size={18} aria-hidden="true" />}
           {saving ? 'Saving…' : 'Save booking settings'}

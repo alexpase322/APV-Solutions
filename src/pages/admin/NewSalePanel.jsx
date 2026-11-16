@@ -70,7 +70,7 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
       <Section
         title={
           <span className="inline-flex items-center gap-2">
-            <CheckCircle2 className="text-[#94A378]" size={22} aria-hidden="true" /> {label} for {result.card.owner?.name}
+            <CheckCircle2 className="text-sage-300" size={22} aria-hidden="true" /> {label} for {result.card.owner?.name}
           </span>
         }
         description={
@@ -89,14 +89,14 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
         <div className="flex flex-wrap gap-2 pt-1">
           <Link
             to={editPath(result.card)}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#263646] px-5 py-3 font-semibold text-white hover:bg-[#94A378] transition-colors"
+            className="inline-flex items-center gap-2 rounded-full bg-sage-300 px-5 py-3 font-semibold text-ink-950 hover:bg-sage-200 transition-colors"
           >
             <Pencil size={16} aria-hidden="true" /> Fill in profile now
           </Link>
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3 font-semibold text-[#263646] hover:border-[#263646] transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
           >
             <Plus size={16} aria-hidden="true" /> New sale
           </button>
@@ -114,8 +114,8 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
           <Alert>{error}</Alert>
 
           <fieldset>
-            <legend className="block text-sm font-medium text-[#263646] mb-1">Products</legend>
-            <p className="text-xs text-gray-500 mb-2">Selling a bundle? Add each product — they will all use the same link.</p>
+            <legend className="block text-sm font-medium text-ink-100 mb-1">Products</legend>
+            <p className="text-xs text-ink-200 mb-2">Selling a bundle? Add each product — they will all use the same link.</p>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
               {PRODUCTS.map((p) => {
                 const limit = limitOf(p.id);
@@ -124,30 +124,34 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
                 return (
                   <div
                     key={p.id}
-                    className={`rounded-xl border-2 p-3 transition-colors ${
-                      disabled ? 'border-gray-100 bg-gray-50 text-gray-400' : n > 0 ? 'border-[#263646] bg-[#263646]/5 text-[#263646]' : 'border-gray-200 text-[#263646]'
+                    className={`rounded-2xl border p-3 transition-colors ${
+                      disabled
+                        ? 'border-dashed border-white/[0.08] bg-transparent text-ink-200'
+                        : n > 0
+                          ? 'border-sage-300/50 bg-sage-300/[0.08] text-ink-50'
+                          : 'border-white/10 bg-white/[0.02] text-ink-50 hover:border-white/20'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <p.icon size={20} aria-hidden="true" />
+                      <p.icon size={20} aria-hidden="true" className={disabled ? 'text-ink-300' : n > 0 ? 'text-sage-300' : 'text-ink-100'} />
                       <span className="text-sm font-semibold">{p.short}</span>
                     </div>
                     {stock && (
-                      <p className={`text-xs mt-0.5 ${disabled ? 'text-gray-400' : 'text-[#4d5a37] font-semibold'}`}>
+                      <p className={`nums text-xs mt-0.5 ${disabled ? 'text-ink-200' : 'text-sage-200 font-semibold'}`}>
                         {stock[p.id] || 0} in stock
                       </p>
                     )}
-                    <div className="mt-2 flex items-center justify-between rounded-lg bg-white border border-gray-200" role="group" aria-label={`${p.label} quantity`}>
+                    <div className="mt-2 flex items-center justify-between rounded-full border border-white/10 bg-ink-900/60 p-0.5" role="group" aria-label={`${p.label} quantity`}>
                       <button
                         type="button"
                         onClick={() => change(p.id, -1)}
                         disabled={n <= 0}
                         aria-label={`One less ${p.label}`}
-                        className="p-2 text-[#263646] disabled:opacity-30"
+                        className="rounded-full p-2 text-ink-50 transition-colors hover:bg-white/[0.07] disabled:opacity-30 disabled:hover:bg-transparent"
                       >
                         <Minus size={14} aria-hidden="true" />
                       </button>
-                      <span className="text-base font-bold tabular-nums" aria-live="polite">
+                      <span className={`text-base font-semibold tabular-nums ${disabled ? 'text-ink-200' : 'text-ink-50'}`} aria-live="polite">
                         {n}
                       </span>
                       <button
@@ -155,7 +159,7 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
                         onClick={() => change(p.id, 1)}
                         disabled={disabled || n >= limit}
                         aria-label={`One more ${p.label}`}
-                        className="p-2 text-[#263646] disabled:opacity-30"
+                        className="rounded-full p-2 text-ink-50 transition-colors hover:bg-white/[0.07] disabled:opacity-30 disabled:hover:bg-transparent"
                       >
                         <Plus size={14} aria-hidden="true" />
                       </button>
@@ -177,14 +181,14 @@ const NewSalePanel = ({ endpoint, editPath, stock, notesHint, onCreated }) => {
           <Field id="sale-notes" label="Notes (optional)" hint={notesHint}>
             <textarea id="sale-notes" rows={2} className={`${inputClass} resize-none`} value={form.notes} onChange={set('notes')} maxLength={1000} />
           </Field>
-          <label className="flex items-center gap-2 text-sm text-[#263646]">
-            <input type="checkbox" checked={form.sendEmail} onChange={set('sendEmail')} className="w-4 h-4 accent-[#263646]" />
+          <label className="flex items-center gap-2 text-sm text-ink-100">
+            <input type="checkbox" checked={form.sendEmail} onChange={set('sendEmail')} className="w-4 h-4 accent-sage-300" />
             Email the activation link to the client
           </label>
           <button
             type="submit"
             disabled={busy || !products.length || overStock}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] px-6 py-3 font-bold text-white hover:bg-[#94A378] disabled:opacity-60 transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 px-6 py-3 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-60 disabled:hover:bg-sage-300 transition-colors"
           >
             {busy ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <UserPlus size={18} aria-hidden="true" />}
             {busy ? 'Creating…' : products.length ? `Create client · ${productsLabel(products)}` : 'Choose a product'}

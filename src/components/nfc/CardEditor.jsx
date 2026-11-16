@@ -15,6 +15,14 @@ const THEMES = [
   { id: 'dark', label: 'Night', icon: Moon, hint: 'Your card always shows in night mode.' },
 ];
 
+/*
+ * Backdrop of the live preview = the public card page (PublicCardPage) in the card's own mode.
+ * The editor around it is dark (<html class="apv-site"> sets light text + color-scheme: dark),
+ * so the preview pins the text color and color-scheme the card was designed against.
+ */
+const PREVIEW_LIGHT = 'bg-[#F8F9FA] border-white/[0.08] text-[#263646] [color-scheme:light]';
+const PREVIEW_DARK = 'bg-[#0b1119] border-white/[0.08] text-gray-100 [color-scheme:dark]';
+
 const LINK_STYLES = [
   { id: 'accent', label: 'Card color', swatch: (accent) => accent },
   { id: 'brand', label: 'Brand colors', swatch: () => 'conic-gradient(#DD2A7B, #1877F2, #25D366, #FF0000, #DD2A7B)' },
@@ -43,15 +51,15 @@ const TagsInput = ({ tags, onChange }) => {
 
   return (
     <Field id="tags" label="Tags" hint={`Shown under your bio. Press Enter or comma to add · ${tags.length}/${MAX_TAGS}`}>
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 focus-within:border-[#94A378] focus-within:ring-2 focus-within:ring-[#94A378]/20 transition-all">
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-ink-900/60 px-3 py-2 focus-within:border-sage-300/60 focus-within:ring-2 focus-within:ring-sage-300/20 transition-all">
         {tags.map((tag, i) => (
-          <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#94A378]/15 pl-3 pr-1 py-1 text-sm font-medium text-[#263646]">
+          <span key={tag} className="inline-flex items-center gap-1 rounded-full border border-sage-300/25 bg-sage-300/10 pl-3 pr-1 py-1 text-sm font-medium text-sage-100">
             {tag}
             <button
               type="button"
               onClick={() => onChange(tags.filter((_, j) => j !== i))}
               aria-label={`Remove tag ${tag}`}
-              className="rounded-full p-0.5 text-[#4d5a37] hover:bg-[#94A378]/30 transition-colors"
+              className="rounded-full p-0.5 text-sage-200 hover:bg-sage-300/20 hover:text-sage-100 transition-colors"
             >
               <X size={14} aria-hidden="true" />
             </button>
@@ -59,7 +67,7 @@ const TagsInput = ({ tags, onChange }) => {
         ))}
         <input
           id="tags"
-          className="flex-1 min-w-[8rem] bg-transparent py-1 text-[#263646] placeholder:text-gray-400 outline-none disabled:cursor-not-allowed"
+          className="flex-1 min-w-[8rem] bg-transparent py-1 text-ink-50 placeholder:text-ink-300 outline-none disabled:cursor-not-allowed"
           value={draft}
           onChange={(e) => (e.target.value.endsWith(',') ? add(e.target.value) : setDraft(e.target.value))}
           onKeyDown={onKeyDown}
@@ -105,15 +113,15 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
 
   return (
     <div>
-      <p className="text-sm font-medium text-[#263646] mb-2">{label}</p>
+      <p className="text-sm font-medium text-ink-100 mb-2">{label}</p>
       <div className="flex items-center gap-4">
         <div
-          className={`${shape === 'circle' ? 'w-20 h-20 rounded-full' : 'w-32 h-20 rounded-xl'} bg-[#F8F9FA] border border-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0`}
+          className={`${shape === 'circle' ? 'w-20 h-20 rounded-full' : 'w-32 h-20 rounded-xl'} bg-white/[0.03] border border-white/10 overflow-hidden flex items-center justify-center flex-shrink-0`}
         >
           {value ? (
             <img src={value} alt="" className="w-full h-full object-cover" />
           ) : (
-            <ImagePlus className="text-gray-300" size={24} aria-hidden="true" />
+            <ImagePlus className="text-ink-300" size={24} aria-hidden="true" />
           )}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -121,7 +129,7 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-[#263646] hover:border-[#263646] disabled:opacity-60 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-60 disabled:hover:border-white/10 disabled:hover:bg-white/[0.03] transition-colors"
           >
             {busy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <ImagePlus size={15} aria-hidden="true" />}
             {busy ? 'Uploading…' : value ? 'Change' : 'Upload'}
@@ -130,7 +138,7 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
             <button
               type="button"
               onClick={onClear}
-              className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 hover:text-red-600 transition-colors"
+              className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-ink-200 hover:bg-red-500/10 hover:text-red-300 transition-colors"
             >
               <X size={15} aria-hidden="true" /> Remove
             </button>
@@ -138,7 +146,7 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
         </div>
         <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={pick} />
       </div>
-      {error && <p className="text-xs text-red-600 mt-2">{error}</p>}
+      {error && <p className="text-xs text-red-300 mt-2">{error}</p>}
     </div>
   );
 };
@@ -279,19 +287,19 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                   const next = SOCIAL_PLATFORMS.find((p) => !usedPlatforms.has(p.id)) || SOCIAL_PLATFORMS.at(-1);
                   setValue('socials', [...profile.socials, { platform: next.id, label: '', url: '' }]);
                 }}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#F8F9FA] px-3 py-2 text-sm font-semibold text-[#263646] hover:bg-gray-100 transition-colors"
+                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
               >
                 <Plus size={15} aria-hidden="true" /> Add
               </button>
             )
           }
         >
-          {profile.socials.length === 0 && <p className="text-sm text-gray-500">No social profiles yet.</p>}
+          {profile.socials.length === 0 && <p className="text-sm text-ink-200">No social profiles yet.</p>}
           {profile.socials.map((s, i) => {
             const platform = platformById(s.platform);
             const BrandIcon = platform.icon;
             return (
-              <div key={i} className="rounded-xl border border-gray-100 p-3 space-y-2">
+              <div key={i} className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <span
                     className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
@@ -316,13 +324,13 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                     ))}
                   </select>
                   <div className="flex flex-shrink-0">
-                    <button type="button" onClick={() => moveItem('socials', i, -1)} disabled={i === 0} aria-label="Move up" className="px-2 text-gray-500 hover:text-[#263646] disabled:opacity-30">
+                    <button type="button" onClick={() => moveItem('socials', i, -1)} disabled={i === 0} aria-label="Move up" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
                       <ArrowUp size={16} aria-hidden="true" />
                     </button>
-                    <button type="button" onClick={() => moveItem('socials', i, 1)} disabled={i === profile.socials.length - 1} aria-label="Move down" className="px-2 text-gray-500 hover:text-[#263646] disabled:opacity-30">
+                    <button type="button" onClick={() => moveItem('socials', i, 1)} disabled={i === profile.socials.length - 1} aria-label="Move down" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
                       <ArrowDown size={16} aria-hidden="true" />
                     </button>
-                    <button type="button" onClick={() => removeItem('socials', i)} aria-label="Remove" className="px-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors">
+                    <button type="button" onClick={() => removeItem('socials', i)} aria-label="Remove" className="px-2 rounded-lg text-ink-200 hover:text-red-300 hover:bg-red-500/10 transition-colors">
                       <Trash2 size={16} aria-hidden="true" />
                     </button>
                   </div>
@@ -356,16 +364,16 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
               <button
                 type="button"
                 onClick={() => setValue('links', [...profile.links, { label: '', url: '' }])}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#F8F9FA] px-3 py-2 text-sm font-semibold text-[#263646] hover:bg-gray-100 transition-colors"
+                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
               >
                 <Plus size={15} aria-hidden="true" /> Add
               </button>
             )
           }
         >
-          {profile.links.length === 0 && <p className="text-sm text-gray-500">No custom links yet.</p>}
+          {profile.links.length === 0 && <p className="text-sm text-ink-200">No custom links yet.</p>}
           {profile.links.map((l, i) => (
-            <div key={i} className="rounded-xl border border-gray-100 p-3 space-y-2">
+            <div key={i} className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-3 space-y-2">
               <div className="flex gap-2">
                 <input
                   aria-label="Link label"
@@ -377,13 +385,13 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                   required
                 />
                 <div className="flex">
-                  <button type="button" onClick={() => moveItem('links', i, -1)} disabled={i === 0} aria-label="Move up" className="px-2 text-gray-500 hover:text-[#263646] disabled:opacity-30">
+                  <button type="button" onClick={() => moveItem('links', i, -1)} disabled={i === 0} aria-label="Move up" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
                     <ArrowUp size={16} aria-hidden="true" />
                   </button>
-                  <button type="button" onClick={() => moveItem('links', i, 1)} disabled={i === profile.links.length - 1} aria-label="Move down" className="px-2 text-gray-500 hover:text-[#263646] disabled:opacity-30">
+                  <button type="button" onClick={() => moveItem('links', i, 1)} disabled={i === profile.links.length - 1} aria-label="Move down" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
                     <ArrowDown size={16} aria-hidden="true" />
                   </button>
-                  <button type="button" onClick={() => removeItem('links', i)} aria-label="Remove" className="px-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors">
+                  <button type="button" onClick={() => removeItem('links', i)} aria-label="Remove" className="px-2 rounded-lg text-ink-200 hover:text-red-300 hover:bg-red-500/10 transition-colors">
                     <Trash2 size={16} aria-hidden="true" />
                   </button>
                 </div>
@@ -402,10 +410,10 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
 
         <Section title="Appearance" description="Night mode and the main color for your buttons and header.">
           <div>
-            <p className="text-sm font-medium text-[#263646] mb-2" id="theme-label">
+            <p className="text-sm font-medium text-ink-100 mb-2" id="theme-label">
               Mode
             </p>
-            <div role="radiogroup" aria-labelledby="theme-label" className="inline-flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-[#F8F9FA] p-1">
+            <div role="radiogroup" aria-labelledby="theme-label" className="inline-flex flex-wrap gap-1 rounded-3xl border border-white/10 bg-white/[0.03] p-1">
               {THEMES.map((t) => {
                 const selected = profile.theme === t.id;
                 return (
@@ -415,8 +423,8 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => setValue('theme', t.id)}
-                    className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                      selected ? 'bg-[#263646] text-white shadow-sm' : 'text-gray-600 hover:text-[#263646]'
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                      selected ? 'bg-sage-300 text-ink-950' : 'text-ink-200 hover:bg-white/[0.05] hover:text-ink-50'
                     }`}
                   >
                     <t.icon size={16} aria-hidden="true" />
@@ -425,9 +433,9 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                 );
               })}
             </div>
-            <p className="text-xs text-gray-500 mt-2">{THEMES.find((t) => t.id === profile.theme)?.hint}</p>
+            <p className="text-xs text-ink-200 mt-2">{THEMES.find((t) => t.id === profile.theme)?.hint}</p>
           </div>
-          <p className="text-sm font-medium text-[#263646] -mb-1">Color</p>
+          <p className="text-sm font-medium text-ink-100 -mb-1">Color</p>
           <div className="flex flex-wrap items-center gap-3">
             {ACCENT_PRESETS.map((c) => (
               <button
@@ -437,26 +445,26 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                 aria-label={`Use color ${c}`}
                 aria-pressed={profile.accentColor.toLowerCase() === c.toLowerCase()}
                 className={`w-9 h-9 rounded-full border-2 transition-transform hover:scale-110 ${
-                  profile.accentColor.toLowerCase() === c.toLowerCase() ? 'border-[#263646] ring-2 ring-offset-2 ring-[#263646]' : 'border-white shadow'
+                  profile.accentColor.toLowerCase() === c.toLowerCase() ? 'border-ink-900 ring-2 ring-sage-300 ring-offset-2 ring-offset-ink-800' : 'border-white/20 hover:border-white/40'
                 }`}
                 style={{ backgroundColor: c }}
               />
             ))}
-            <label className="inline-flex items-center gap-2 text-sm text-gray-600 ml-1">
+            <label className="inline-flex items-center gap-2 text-sm text-ink-100 ml-1">
               <input
                 type="color"
                 value={profile.accentColor}
                 onChange={(e) => setValue('accentColor', e.target.value)}
-                className="w-9 h-9 rounded-full border border-gray-200 cursor-pointer bg-transparent"
+                className="w-9 h-9 rounded-full border border-white/15 cursor-pointer bg-transparent"
               />
               Custom
             </label>
           </div>
           <div>
-            <p className="text-sm font-medium text-[#263646] mb-2" id="link-style-label">
+            <p className="text-sm font-medium text-ink-100 mb-2" id="link-style-label">
               Social &amp; link button borders
             </p>
-            <div role="radiogroup" aria-labelledby="link-style-label" className="inline-flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-[#F8F9FA] p-1">
+            <div role="radiogroup" aria-labelledby="link-style-label" className="inline-flex flex-wrap gap-1 rounded-3xl border border-white/10 bg-white/[0.03] p-1">
               {LINK_STYLES.map((s) => {
                 const selected = profile.linkStyle === s.id;
                 return (
@@ -466,11 +474,11 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => setValue('linkStyle', s.id)}
-                    className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                      selected ? 'bg-[#263646] text-white shadow-sm' : 'text-gray-600 hover:text-[#263646]'
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                      selected ? 'bg-sage-300 text-ink-950' : 'text-ink-200 hover:bg-white/[0.05] hover:text-ink-50'
                     }`}
                   >
-                    <span className="w-4 h-4 rounded-full flex-shrink-0 ring-1 ring-black/10" style={{ background: s.swatch(profile.accentColor) }} aria-hidden="true" />
+                    <span className="w-4 h-4 rounded-full flex-shrink-0 ring-1 ring-white/25" style={{ background: s.swatch(profile.accentColor) }} aria-hidden="true" />
                     {s.label}
                   </button>
                 );
@@ -480,19 +488,19 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
         </Section>
 
         {/* Save bar */}
-        <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border border-gray-100 sm:rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 z-20">
+        <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-ink-850/90 backdrop-blur-xl backdrop-saturate-150 border-t sm:border border-white/[0.08] sm:rounded-2xl sm:shadow-[0_30px_60px_-30px_rgba(2,6,10,0.8)] px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 z-20">
           <div className="flex-1 min-w-0">
             {message ? (
               <Alert kind={message.kind}>{message.text}</Alert>
             ) : (
-              <p className="text-sm text-gray-500">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>
+              <p className="text-sm text-ink-200">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>
             )}
           </div>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => setShowPreview((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-3 font-semibold text-[#263646]"
+              className="lg:hidden inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-3 font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
             >
               {showPreview ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
               Preview
@@ -500,7 +508,7 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
             <button
               type="submit"
               disabled={saving || !dirty}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-[#263646] px-6 py-3 font-bold text-white hover:bg-[#94A378] disabled:opacity-50 disabled:hover:bg-[#263646] transition-colors"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full bg-sage-300 px-6 py-3 font-semibold text-ink-950 hover:bg-sage-200 disabled:opacity-50 disabled:hover:bg-sage-300 transition-colors"
             >
               {saving ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Save size={18} aria-hidden="true" />}
               {saving ? 'Saving…' : 'Save changes'}
@@ -511,12 +519,12 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
 
       {/* Live preview */}
       <aside className={`${showPreview ? 'block' : 'hidden'} lg:block lg:sticky lg:top-24`}>
-        <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 text-center">
+        <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink-200 mb-3 text-center">
           Live preview{previewDark ? ' · night mode' : ''}
         </p>
         <div
           className={`rounded-3xl border py-4 max-h-[calc(100vh-8rem)] overflow-y-auto transition-colors ${
-            previewDark ? 'bg-[#0b1119] border-[#0b1119]' : 'bg-[#F8F9FA] border-gray-100'
+            previewDark ? PREVIEW_DARK : PREVIEW_LIGHT
           }`}
         >
           <CardProfile profile={profile} preview />

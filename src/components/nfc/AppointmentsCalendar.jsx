@@ -43,7 +43,7 @@ const monthGrid = (ym) => {
 const MAX_CHIPS = 3;
 
 const chipClass = (appt) =>
-  appt.status === 'cancelled' ? 'bg-gray-100 text-gray-400 line-through' : 'bg-[#94A378]/15 text-[#4d5a37]';
+  appt.status === 'cancelled' ? 'bg-white/[0.05] text-ink-200 line-through' : 'bg-sage-300/15 text-sage-100';
 
 const LegendDot = ({ cls, children }) => (
   <span className="inline-flex items-center gap-1.5">
@@ -110,18 +110,18 @@ const AppointmentsCalendar = ({ endpoint, cancelPath, title = 'Appointments' }) 
       description={`${state.upcomingConfirmed} upcoming confirmed · times in ${timeZoneLabel(tz)}`}
       action={
         <div className="flex items-center gap-1">
-          {state.status === 'loading' && <Loader2 size={16} className="animate-spin text-[#94A378] mr-1" aria-label="Loading" />}
+          {state.status === 'loading' && <Loader2 size={16} className="animate-spin text-sage-300 mr-1" aria-label="Loading" />}
           <button
             type="button"
             onClick={() => goTo(today.slice(0, 7))}
-            className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-semibold text-[#263646] hover:bg-[#F8F9FA]"
+            className="rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
           >
             Today
           </button>
-          <button type="button" onClick={() => goTo(addMonths(month, -1))} aria-label="Previous month" className="rounded-lg p-2 text-[#263646] hover:bg-[#F8F9FA]">
+          <button type="button" onClick={() => goTo(addMonths(month, -1))} aria-label="Previous month" className="rounded-full p-2 text-ink-100 hover:bg-white/[0.06] hover:text-ink-50 transition-colors">
             <ChevronLeft size={18} aria-hidden="true" />
           </button>
-          <button type="button" onClick={() => goTo(addMonths(month, 1))} aria-label="Next month" className="rounded-lg p-2 text-[#263646] hover:bg-[#F8F9FA]">
+          <button type="button" onClick={() => goTo(addMonths(month, 1))} aria-label="Next month" className="rounded-full p-2 text-ink-100 hover:bg-white/[0.06] hover:text-ink-50 transition-colors">
             <ChevronRight size={18} aria-hidden="true" />
           </button>
         </div>
@@ -130,31 +130,31 @@ const AppointmentsCalendar = ({ endpoint, cancelPath, title = 'Appointments' }) 
       {state.status === 'error' && <Alert>{state.error}</Alert>}
 
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h3 className="text-xl font-bold text-[#263646]" aria-live="polite">
+        <h3 className="text-xl font-semibold tracking-[-0.02em] text-ink-50" aria-live="polite">
           {calendarDate(`${month}-01`, { month: 'long', year: 'numeric' })}
         </h3>
-        <p className="text-sm text-gray-600">
-          <span className="font-semibold text-[#4d5a37]">{confirmedThisMonth}</span> confirmed
+        <p className="text-sm text-ink-200">
+          <span className="nums font-semibold text-sage-200">{confirmedThisMonth}</span> confirmed
           {cancelledThisMonth > 0 && (
             <>
               {' · '}
-              <span className="font-semibold text-gray-700">{cancelledThisMonth}</span> cancelled
+              <span className="nums font-semibold text-ink-100">{cancelledThisMonth}</span> cancelled
             </>
           )}{' '}
           this month
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-gray-200">
-        <div className="grid grid-cols-7 bg-[#F8F9FA] border-b border-gray-200">
+      <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
+        <div className="grid grid-cols-7 bg-white/[0.03] border-b border-white/[0.08]">
           {WEEKDAYS.map((w) => (
-            <div key={w.day} className="py-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <div key={w.day} className="py-2 text-center font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-200">
               <span className="sm:hidden">{w.short.slice(0, 1)}</span>
               <span className="hidden sm:inline">{w.short}</span>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-px bg-gray-200">
+        <div className="grid grid-cols-7 gap-px bg-white/[0.07]">
           {grid.days.map((ymd) => {
             const items = byDay[ymd] || [];
             const outside = !ymd.startsWith(month);
@@ -175,28 +175,28 @@ const AppointmentsCalendar = ({ endpoint, cancelPath, title = 'Appointments' }) 
                 }}
                 aria-pressed={isSelected}
                 aria-label={label}
-                className={`relative flex min-h-16 sm:min-h-28 flex-col items-stretch gap-1 p-1 sm:p-1.5 text-left transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-[#263646] ${
+                className={`relative flex min-h-16 sm:min-h-28 flex-col items-stretch gap-1 p-1 sm:p-1.5 text-left transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sage-300 ${
                   closed
-                    ? 'bg-[repeating-linear-gradient(135deg,#fafafa_0_6px,#f3f4f6_6px_12px)]'
-                    : 'bg-white hover:bg-[#F8F9FA]'
-                } ${isSelected ? 'ring-2 ring-inset ring-[#94A378]' : ''}`}
+                    ? 'bg-[repeating-linear-gradient(135deg,var(--color-ink-800)_0_6px,var(--color-ink-750)_6px_12px)]'
+                    : 'bg-ink-800 hover:bg-ink-750'
+                } ${isSelected ? 'ring-2 ring-inset ring-sage-300' : ''}`}
               >
                 <span className="flex items-center justify-between gap-1">
                   <span
                     className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1 text-xs sm:text-sm font-semibold ${
-                      isToday ? 'bg-[#263646] text-white' : outside ? 'text-gray-300' : ymd < today ? 'text-gray-400' : 'text-[#263646]'
+                      isToday ? 'bg-sage-300 text-ink-950' : outside ? 'text-ink-300' : ymd < today ? 'text-ink-200' : 'text-ink-50'
                     }`}
                   >
                     {Number(ymd.slice(8))}
                   </span>
-                  {closed && !outside && <span className="hidden sm:inline text-[10px] font-medium uppercase tracking-wide text-gray-400">{closed}</span>}
+                  {closed && !outside && <span className="hidden sm:inline font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-ink-200">{closed}</span>}
                 </span>
 
                 {/* Phones: one dot per appointment */}
                 {items.length > 0 && (
                   <span className="flex flex-wrap gap-0.5 px-0.5 sm:hidden" aria-hidden="true">
                     {items.slice(0, 4).map((a) => (
-                      <span key={a.id} className={`h-1.5 w-1.5 rounded-full ${a.status === 'cancelled' ? 'bg-gray-300' : 'bg-[#94A378]'}`} />
+                      <span key={a.id} className={`h-1.5 w-1.5 rounded-full ${a.status === 'cancelled' ? 'bg-ink-300' : 'bg-sage-300'}`} />
                     ))}
                   </span>
                 )}
@@ -208,7 +208,7 @@ const AppointmentsCalendar = ({ endpoint, cancelPath, title = 'Appointments' }) 
                       <span className="font-semibold">{formatTime(a.start, tz)}</span> {a.name}
                     </span>
                   ))}
-                  {items.length > MAX_CHIPS && <span className="px-1.5 text-[11px] font-semibold text-gray-500">+{items.length - MAX_CHIPS} more</span>}
+                  {items.length > MAX_CHIPS && <span className="px-1.5 text-[11px] font-semibold text-ink-200">+{items.length - MAX_CHIPS} more</span>}
                 </span>
               </button>
             );
@@ -216,23 +216,23 @@ const AppointmentsCalendar = ({ endpoint, cancelPath, title = 'Appointments' }) 
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-        <LegendDot cls="bg-[#94A378]/40">Confirmed</LegendDot>
-        <LegendDot cls="bg-gray-200">Cancelled</LegendDot>
-        {availability?.enabled && <LegendDot cls="bg-[repeating-linear-gradient(135deg,#fafafa_0_3px,#e5e7eb_3px_6px)] border border-gray-200">Closed / day off</LegendDot>}
-        <LegendDot cls="bg-[#263646] rounded-full">Today</LegendDot>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-200">
+        <LegendDot cls="bg-sage-300/40">Confirmed</LegendDot>
+        <LegendDot cls="bg-white/10">Cancelled</LegendDot>
+        {availability?.enabled && <LegendDot cls="bg-[repeating-linear-gradient(135deg,var(--color-ink-800)_0_3px,var(--color-ink-600)_3px_6px)] border border-white/15">Closed / day off</LegendDot>}
+        <LegendDot cls="bg-sage-300 rounded-full">Today</LegendDot>
       </div>
 
-      <div className="border-t border-gray-100 pt-4 space-y-3">
+      <div className="border-t border-white/[0.08] pt-4 space-y-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="font-bold text-[#263646]">{calendarDate(selected, { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
-          <span className="text-sm text-gray-500">
+          <h3 className="font-semibold text-ink-50">{calendarDate(selected, { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
+          <span className="text-sm text-ink-200">
             {selectedItems.length === 1 ? '1 appointment' : `${selectedItems.length} appointments`}
             {closedReason(selected) ? ` · ${closedReason(selected)}` : ''}
           </span>
         </div>
         {selectedItems.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+          <p className="rounded-2xl border border-dashed border-white/10 p-6 text-center text-sm text-ink-200">
             {state.status === 'loading' ? 'Loading…' : 'Nothing booked on this day.'}
           </p>
         ) : (
