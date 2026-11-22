@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, Eye, EyeOff, ImagePlus, Loader2, Monitor, Moon, Plus, Save, Sun, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Eye, EyeOff, Image as ImageIcon, ImagePlus, Link2, Loader2, Monitor, Moon, Plus, Save, Sun, Trash2, X } from 'lucide-react';
 import CardProfile from './CardProfile';
 import { Alert, Field, Section, inputClass } from './ui';
-import { ACCENT_PRESETS, EMPTY_PROFILE, SOCIAL_PLATFORMS, platformById, readableOn } from '../../lib/nfc';
+import { ACCENT_PRESETS, EMPTY_PROFILE, SOCIAL_PLATFORMS, normalizeLink, platformById, readableOn } from '../../lib/nfc';
 import useCardTheme from '../../hooks/useCardTheme';
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -22,6 +22,12 @@ const THEMES = [
  */
 const PREVIEW_LIGHT = 'bg-[#F8F9FA] border-white/[0.08] text-[#263646] [color-scheme:light]';
 const PREVIEW_DARK = 'bg-[#0b1119] border-white/[0.08] text-gray-100 [color-scheme:dark]';
+
+/** A custom button either opens a link or shows an uploaded image (payment QR code, flyer, menu…). */
+const LINK_KINDS = [
+  { id: 'link', label: 'Link', icon: Link2 },
+  { id: 'image', label: 'Image', icon: ImageIcon },
+];
 
 const LINK_STYLES = [
   { id: 'accent', label: 'Card color', swatch: (accent) => accent },
@@ -85,11 +91,15 @@ const normalize = (profile) => ({
   ...EMPTY_PROFILE,
   ...profile,
   socials: profile?.socials ? profile.socials.map((s) => ({ label: '', ...s })) : [],
-  links: profile?.links ? profile.links.map((l) => ({ ...l })) : [],
+  links: profile?.links ? profile.links.map(normalizeLink) : [],
   tags: profile?.tags ? [...profile.tags] : [],
 });
 
-const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
+/**
+ * Image upload with a thumbnail. `shape`: 'circle' | 'square' | wide (default).
+ * `fit="contain"` shows the whole image on white (QR codes must not be cropped).
+ */
+const ImagePicker = ({ label, value, onUpload, onClear, shape, fit = 'cover', hint }) => {
   const inputRef = useRef(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -113,13 +123,15 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
 
   return (
     <div>
-      <p className="text-sm font-medium text-ink-100 mb-2">{label}</p>
+      {label && <p className="text-sm font-medium text-ink-100 mb-2">{label}</p>}
       <div className="flex items-center gap-4">
         <div
-          className={`${shape === 'circle' ? 'w-20 h-20 rounded-full' : 'w-32 h-20 rounded-xl'} bg-white/[0.03] border border-white/10 overflow-hidden flex items-center justify-center flex-shrink-0`}
+          className={`${shape === 'circle' ? 'w-20 h-20 rounded-full' : shape === 'square' ? 'w-20 h-20 rounded-xl' : 'w-32 h-20 rounded-xl'} ${
+            value && fit === 'contain' ? 'bg-white' : 'bg-white/[0.03]'
+          } border border-white/10 overflow-hidden flex items-center justify-center flex-shrink-0`}
         >
           {value ? (
-            <img src={value} alt="" className="w-full h-full object-cover" />
+            <img src={value} alt="" className={`w-full h-full ${fit === 'contain' ? 'object-contain p-1' : 'object-cover'}`} />
           ) : (
             <ImagePlus className="text-ink-300" size={24} aria-hidden="true" />
           )}
@@ -146,6 +158,7 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
         </div>
         <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={pick} />
       </div>
+      {hint && !error && <p className="text-xs text-ink-200 mt-2">{hint}</p>}
       {error && <p className="text-xs text-red-300 mt-2">{error}</p>}
     </div>
   );
@@ -156,7 +169,7 @@ const ImagePicker = ({ label, value, onUpload, onClear, shape }) => {
  *
  * @param {object}   props.profile   Initial profile
  * @param {(profile) => Promise<object>} props.onSave  Persists and returns the saved profile
- * @param {(file, kind) => Promise<string>} props.onUpload Uploads an image and returns its URL
+ * @param {(file, kind) => Promise<string>} props.onUpload Uploads an image ('avatar' | 'cover' | 'link') and returns its URL
  */
 const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
   const [profile, setProfile] = useState(() => normalize(initialProfile));
@@ -164,6 +177,8 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  // Link images being uploaded: reordering/removing links is paused meanwhile so the result lands on the right one
+  const [linkUploads, setLinkUploads] = useState(0);
 
   const dirty = useMemo(() => JSON.stringify(profile) !== saved, [profile, saved]);
   const previewDark = useCardTheme(profile.theme);
@@ -199,8 +214,24 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
     setValue(kind === 'cover' ? 'coverUrl' : 'avatarUrl', url);
   };
 
+  const uploadLinkImage = (index) => async (file) => {
+    setLinkUploads((n) => n + 1);
+    try {
+      const url = await onUpload(file, 'link');
+      updateItem('links', index, 'imageUrl', url);
+      setMessage(null); // clears a previous "upload an image" warning
+    } finally {
+      setLinkUploads((n) => n - 1);
+    }
+  };
+
   const submit = async (e) => {
     e.preventDefault();
+    const missingImage = profile.links.find((l) => l.kind === 'image' && !l.imageUrl);
+    if (missingImage) {
+      setMessage({ kind: 'error', text: `Upload an image for “${missingImage.label || 'your image button'}” or switch it to a link.` });
+      return;
+    }
     setSaving(true);
     setMessage(null);
     try {
@@ -358,12 +389,12 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
 
         <Section
           title="Custom links"
-          description="Booking page, portfolio, listings, menu, reviews…"
+          description="Booking page, portfolio, menu, reviews… or an image, like the QR code of your payment app."
           action={
             profile.links.length < 10 && (
               <button
                 type="button"
-                onClick={() => setValue('links', [...profile.links, { label: '', url: '' }])}
+                onClick={() => setValue('links', [...profile.links, normalizeLink()])}
                 className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-ink-50 hover:border-white/25 hover:bg-white/[0.07] transition-colors"
               >
                 <Plus size={15} aria-hidden="true" /> Add
@@ -372,40 +403,77 @@ const CardEditor = ({ profile: initialProfile, onSave, onUpload }) => {
           }
         >
           {profile.links.length === 0 && <p className="text-sm text-ink-200">No custom links yet.</p>}
-          {profile.links.map((l, i) => (
-            <div key={i} className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-3 space-y-2">
-              <div className="flex gap-2">
-                <input
-                  aria-label="Link label"
-                  className={inputClass}
-                  value={l.label}
-                  onChange={(e) => updateItem('links', i, 'label', e.target.value)}
-                  placeholder="Book a meeting"
-                  maxLength={60}
-                  required
-                />
-                <div className="flex">
-                  <button type="button" onClick={() => moveItem('links', i, -1)} disabled={i === 0} aria-label="Move up" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
-                    <ArrowUp size={16} aria-hidden="true" />
-                  </button>
-                  <button type="button" onClick={() => moveItem('links', i, 1)} disabled={i === profile.links.length - 1} aria-label="Move down" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
-                    <ArrowDown size={16} aria-hidden="true" />
-                  </button>
-                  <button type="button" onClick={() => removeItem('links', i)} aria-label="Remove" className="px-2 rounded-lg text-ink-200 hover:text-red-300 hover:bg-red-500/10 transition-colors">
-                    <Trash2 size={16} aria-hidden="true" />
-                  </button>
+          {profile.links.map((l, i) => {
+            const isImage = l.kind === 'image';
+            const locked = linkUploads > 0;
+            return (
+              <div key={i} className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-3 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    aria-label="Button text"
+                    className={inputClass}
+                    value={l.label}
+                    onChange={(e) => updateItem('links', i, 'label', e.target.value)}
+                    placeholder={isImage ? 'Pay with QR' : 'Book a meeting'}
+                    maxLength={60}
+                    required
+                  />
+                  <div className="flex">
+                    <button type="button" onClick={() => moveItem('links', i, -1)} disabled={locked || i === 0} aria-label="Move up" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
+                      <ArrowUp size={16} aria-hidden="true" />
+                    </button>
+                    <button type="button" onClick={() => moveItem('links', i, 1)} disabled={locked || i === profile.links.length - 1} aria-label="Move down" className="px-2 text-ink-200 hover:text-ink-50 disabled:opacity-30 disabled:hover:text-ink-200 transition-colors">
+                      <ArrowDown size={16} aria-hidden="true" />
+                    </button>
+                    <button type="button" onClick={() => removeItem('links', i)} disabled={locked} aria-label="Remove" className="px-2 rounded-lg text-ink-200 hover:text-red-300 hover:bg-red-500/10 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-ink-200 transition-colors">
+                      <Trash2 size={16} aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
+
+                <div role="radiogroup" aria-label="What this button opens" className="inline-flex gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
+                  {LINK_KINDS.map((k) => {
+                    const selected = l.kind === k.id;
+                    return (
+                      <button
+                        key={k.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => updateItem('links', i, 'kind', k.id)}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
+                          selected ? 'bg-sage-300 text-ink-950' : 'text-ink-200 hover:bg-white/[0.05] hover:text-ink-50'
+                        }`}
+                      >
+                        <k.icon size={15} aria-hidden="true" />
+                        {k.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {isImage ? (
+                  <ImagePicker
+                    shape="square"
+                    fit="contain"
+                    value={l.imageUrl}
+                    onUpload={uploadLinkImage(i)}
+                    onClear={() => updateItem('links', i, 'imageUrl', '')}
+                    hint="Visitors tap the button to see it full size and save it. JPG, PNG, WEBP or GIF · max 5 MB."
+                  />
+                ) : (
+                  <input
+                    aria-label="Link URL"
+                    className={inputClass}
+                    value={l.url}
+                    onChange={(e) => updateItem('links', i, 'url', e.target.value)}
+                    placeholder="https://calendly.com/you"
+                    required
+                  />
+                )}
               </div>
-              <input
-                aria-label="Link URL"
-                className={inputClass}
-                value={l.url}
-                onChange={(e) => updateItem('links', i, 'url', e.target.value)}
-                placeholder="https://calendly.com/you"
-                required
-              />
-            </div>
-          ))}
+            );
+          })}
         </Section>
 
         <Section title="Appearance" description="Night mode and the main color for your buttons and header.">

@@ -2,6 +2,7 @@ import {
   FaFacebookF,
   FaGithub,
   FaGlobe,
+  FaImage,
   FaInstagram,
   FaLink,
   FaLinkedinIn,
@@ -76,6 +77,17 @@ export const platformById = (id) => SOCIAL_PLATFORMS.find((p) => p.id === id) ||
 
 /** Generic "link" platform used for custom links whose domain isn't a known network. */
 export const GENERIC_LINK = { id: 'link', label: 'Link', icon: FaLink, background: null, domains: [] };
+
+/** Custom button that shows an uploaded image (e.g. a payment QR code) instead of opening a URL. */
+export const IMAGE_LINK = { id: 'image', label: 'Image', icon: FaImage, background: null, domains: [] };
+
+/** Custom link with every field present. `kind` is 'link' (opens `url`) or 'image' (shows `imageUrl`). */
+export const normalizeLink = (link = {}) => ({
+  label: link.label ?? '',
+  kind: link.kind === 'image' ? 'image' : 'link',
+  url: link.url ?? '',
+  imageUrl: link.imageUrl ?? '',
+});
 
 /** Detects the platform from a URL (e.g. a YouTube video in "custom links" gets the YouTube logo). */
 export const platformFromUrl = (url) => {

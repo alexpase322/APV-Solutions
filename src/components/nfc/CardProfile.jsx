@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Check, ChevronRight, Globe, Mail, MapPin, MessageCircle, Phone, Share2, UserPlus } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { Check, ChevronRight, Globe, Mail, MapPin, Maximize2, MessageCircle, Phone, Share2, UserPlus } from 'lucide-react';
+import ImageLightbox from './ImageLightbox';
 import {
   CARD_SURFACE,
+  IMAGE_LINK,
   digitsOnly,
   initials,
   luminance,
@@ -14,21 +16,23 @@ import {
 } from '../../lib/nfc';
 import useCardTheme from '../../hooks/useCardTheme';
 
-/** Pill-shaped link: brand logo badge on the left, custom text, brand-colored border. */
-const LinkPill = ({ href, platform, label, accent, onAccent, dark, linkStyle }) => {
+/**
+ * Pill-shaped button: brand logo badge on the left, custom text, brand-colored border.
+ * With `href` it's a link that opens in a new tab; with `onOpen` it's a button that shows an image on the card.
+ */
+const LinkPill = ({ href, onOpen, platform, label, accent, onAccent, dark, linkStyle }) => {
   const Icon = platform.icon;
-  // Generic links / "other" use the card's accent color instead of a brand color
+  // Generic links / "other" / images use the card's accent color instead of a brand color
   const badgeStyle = platform.background
     ? { background: platform.background, color: platform.color || '#ffffff' }
     : { background: accent, color: onAccent };
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="link-pill group flex items-center gap-4 rounded-full p-1.5 pr-5 shadow-sm active:scale-[0.99] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#94A378]"
-      style={pillStyle(platform, { accent, dark, linkStyle })}
-    >
+  const className =
+    'link-pill group flex w-full items-center gap-4 rounded-full p-1.5 pr-5 text-left shadow-sm active:scale-[0.99] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#94A378]';
+  const style = pillStyle(platform, { accent, dark, linkStyle });
+  const TrailingIcon = onOpen ? Maximize2 : ChevronRight;
+
+  const content = (
+    <>
       <span
         className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 dark:ring-1 dark:ring-white/15"
         style={badgeStyle}
@@ -37,11 +41,24 @@ const LinkPill = ({ href, platform, label, accent, onAccent, dark, linkStyle }) 
         <Icon size={22} />
       </span>
       <span className="flex-1 min-w-0 truncate font-semibold text-[#263646] dark:text-gray-100">{label}</span>
-      <ChevronRight
-        size={18}
-        className="flex-shrink-0 text-gray-400 dark:text-gray-500 transition-transform group-hover:translate-x-0.5"
+      <TrailingIcon
+        size={onOpen ? 16 : 18}
+        className={`flex-shrink-0 text-gray-400 dark:text-gray-500 transition-transform ${onOpen ? 'group-hover:scale-110' : 'group-hover:translate-x-0.5'}`}
         aria-hidden="true"
       />
+    </>
+  );
+
+  if (onOpen) {
+    return (
+      <button type="button" onClick={onOpen} aria-haspopup="dialog" className={className} style={style}>
+        {content}
+      </button>
+    );
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className} style={style}>
+      {content}
     </a>
   );
 };
@@ -71,6 +88,9 @@ const ActionButton = ({ href, icon, label, external }) => {
  */
 const CardProfile = ({ profile, vcardHref, shareUrl, preview = false, children }) => {
   const [copied, setCopied] = useState(false);
+  // Image of a custom button currently shown full screen ({ src, title }), if any
+  const [openImage, setOpenImage] = useState(null);
+  const closeImage = useCallback(() => setOpenImage(null), []);
   const p = profile || {};
   const dark = useCardTheme(p.theme);
   const accent = /^#[0-9a-f]{6}$/i.test(p.accentColor || '') ? p.accentColor : '#263646';
@@ -95,19 +115,21 @@ const CardProfile = ({ profile, vcardHref, shareUrl, preview = false, children }
     website && { href: website, icon: Globe, label: 'Website', external: true },
   ].filter(Boolean);
 
-  // Socials first, then custom links. Custom links get a brand logo when the URL is from a known network.
+  // Socials first, then custom links. Custom links get a brand logo when the URL is from a known network;
+  // image links (e.g. a payment QR code) open the picture on the card instead of leaving it.
   const pills = [
     ...(p.socials || []).map((s, i) => {
       const platform = platformById(s.platform);
       return { key: `s-${i}`, href: safeHref(s.url), platform, label: s.label?.trim() || platform.label };
     }),
-    ...(p.links || []).map((l, i) => ({
-      key: `l-${i}`,
-      href: safeHref(l.url),
-      platform: platformFromUrl(l.url),
-      label: l.label,
-    })),
-  ].filter((item) => item.href);
+    ...(p.links || []).map((l, i) => {
+      if (l.kind === 'image') {
+        const src = safeHref(l.imageUrl);
+        return { key: `l-${i}`, onOpen: src ? () => setOpenImage({ src, title: l.label }) : null, platform: IMAGE_LINK, label: l.label };
+      }
+      return { key: `l-${i}`, href: safeHref(l.url), platform: platformFromUrl(l.url), label: l.label };
+    }),
+  ].filter((item) => item.href || item.onOpen);
 
   const share = async () => {
     if (!shareUrl) return;
@@ -221,8 +243,8 @@ const CardProfile = ({ profile, vcardHref, shareUrl, preview = false, children }
         {/* Social media + custom links as pills */}
         {pills.length > 0 && (
           <div className="mt-6 space-y-3">
-            {pills.map((item) => (
-              <LinkPill key={item.key} {...item} accent={accent} onAccent={onAccent} dark={dark} linkStyle={p.linkStyle} />
+            {pills.map(({ key, ...item }) => (
+              <LinkPill key={key} {...item} accent={accent} onAccent={onAccent} dark={dark} linkStyle={p.linkStyle} />
             ))}
           </div>
         )}
@@ -240,6 +262,8 @@ const CardProfile = ({ profile, vcardHref, shareUrl, preview = false, children }
           </a>
         )}
       </div>
+
+      {openImage && <ImageLightbox src={openImage.src} title={openImage.title} onClose={closeImage} />}
     </div>
   );
 };
