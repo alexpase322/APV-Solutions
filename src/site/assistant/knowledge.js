@@ -1397,7 +1397,7 @@ const INTENTS = [
           `APV was founded with a simple mission: make enterprise-level digital transformation accessible, understandable and profitable for businesses of all sizes.`,
         ],
         bullets: [
-          `Alex Pastrana — Co-founder & Lead Developer`,
+          `Alexander Pastrana Serrato — Co-founder & Lead Developer`,
           `Alexander Pastrana Villamil — Co-founder & CFAO, Power BI specialist`,
         ],
         actions: [
@@ -1416,7 +1416,7 @@ const INTENTS = [
           `APV nació con una misión sencilla: que la transformación digital de nivel empresarial sea accesible, comprensible y rentable para negocios de cualquier tamaño.`,
         ],
         bullets: [
-          `Alex Pastrana — Cofundador y Lead Developer`,
+          `Alexander Pastrana Serrato — Cofundador y Lead Developer`,
           `Alexander Pastrana Villamil — Cofundador y CFAO, especialista en Power BI`,
         ],
         actions: [

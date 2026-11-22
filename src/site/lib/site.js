@@ -5,7 +5,7 @@ export const SITE = {
   legalName: 'APV Business Solutions LLC',
   short: 'APV',
   tagline: 'Empowering businesses through custom software, intelligent automation, and data-driven insights.',
-  email: 'apv.business.solutions@gmail.com',
+  email: 'info@apvsolutions.tech',
   legalEmail: 'info@apvsolutions.tech',
   phoneDisplay: '+1 (863) 441-1687',
   phoneHref: 'tel:+18634411687',
@@ -180,7 +180,7 @@ export const PRODUCTS = [
 ];
 
 export const TEAM = [
-  { name: 'Alex Pastrana', role: 'Co-Founder & Lead Developer', initials: 'AP' },
+  { name: 'Alexander Pastrana Serrato', role: 'Co-Founder & Lead Developer', initials: 'APS' },
   {
     name: 'Alexander Pastrana Villamil',
     role: 'Co-Founder & Chief Financial & Administrative Officer (CFAO) — Power BI Specialist',
