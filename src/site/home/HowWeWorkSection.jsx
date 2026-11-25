@@ -134,7 +134,7 @@ export default function HowWeWorkSection() {
 
         <Reveal className="mt-14 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] text-ink-200 sm:mt-16">
           <span>Wondering how long your project would take?</span>
-          <AskAILink chip="timeline">Ask our AI assistant</AskAILink>
+          <AskAILink>Ask our AI assistant</AskAILink>
         </Reveal>
       </Container>
     </Section>

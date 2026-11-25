@@ -21,7 +21,6 @@ export default function NfcPage() {
       <Audience />
       <Faq />
       <CtaBand
-        askChip="nfc"
         eyebrow={NFC_CTA.eyebrow}
         title={NFC_CTA.title}
         description={NFC_CTA.description}

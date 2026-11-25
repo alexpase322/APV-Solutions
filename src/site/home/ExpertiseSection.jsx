@@ -27,7 +27,7 @@ export default function ExpertiseSection() {
           eyebrow="Our expertise"
           title="Comprehensive solutions for *modern businesses*"
           description="We combine technical expertise with strategic thinking to deliver solutions that drive real growth."
-          actions={<AskAIButton chip="services">Not sure which fits? Ask AI</AskAIButton>}
+          actions={<AskAIButton>Not sure which fits? Ask AI</AskAIButton>}
         />
         <div className="mt-14 grid gap-5 sm:mt-16 lg:grid-cols-12 lg:gap-6">
           <Reveal className="lg:col-span-7">

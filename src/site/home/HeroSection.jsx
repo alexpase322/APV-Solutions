@@ -71,7 +71,7 @@ export default function HeroSection() {
             </motion.div>
             <motion.p {...rise(0.78)} className="mt-5 flex flex-wrap items-center gap-x-2 text-[15px] text-ink-200">
               <span>Not sure where to start?</span>
-              <AskAILink chip="services">Ask our AI assistant</AskAILink>
+              <AskAILink>Ask our AI assistant</AskAILink>
             </motion.p>
             <motion.div
               {...rise(0.85)}

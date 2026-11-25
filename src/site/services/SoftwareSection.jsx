@@ -76,7 +76,7 @@ function SoftwareCopy({ titleId }) {
         <TextLink to={CONTACT_PATH} className="min-h-11">
           Start a software project
         </TextLink>
-        <AskAILink chip="software">Ask AI about custom software</AskAILink>
+        <AskAILink>Ask AI about custom software</AskAILink>
       </Reveal>
     </>
   );

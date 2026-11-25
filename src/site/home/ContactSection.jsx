@@ -102,7 +102,7 @@ export default function ContactSection() {
               >
                 Chat on WhatsApp
               </Button>
-              <AskAIButton chip="booking">Ask our AI assistant</AskAIButton>
+              <AskAIButton>Ask our AI assistant</AskAIButton>
               <p className="text-sm text-ink-200">
                 Prefer to read first?{' '}
                 <Link

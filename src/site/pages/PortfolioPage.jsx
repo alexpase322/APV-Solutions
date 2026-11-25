@@ -17,7 +17,6 @@ export default function PortfolioPage() {
       <ProductShowcase />
       <StackSection />
       <CtaBand
-        askChip="portfolio"
         eyebrow={CTA_COPY.eyebrow}
         title={CTA_COPY.title}
         description={CTA_COPY.description}

@@ -86,7 +86,7 @@ export function PageHero({ eyebrow, title, description, actions, aside, footnote
 }
 
 /** Closing call-to-action card with orbits and a warm aurora. */
-export function CtaBand({ eyebrow = 'Get in touch', title, description, actions, className, titleId, askChip }) {
+export function CtaBand({ eyebrow = 'Get in touch', title, description, actions, className, titleId }) {
   const reactId = useId();
   const headingId = titleId ?? `cta-${reactId.replace(/:/g, '')}`;
 
@@ -111,7 +111,7 @@ export function CtaBand({ eyebrow = 'Get in touch', title, description, actions,
             <div className="mt-10 flex flex-wrap justify-center gap-3">{actions}</div>
             <p className="mt-6 flex flex-wrap items-center justify-center gap-x-2 text-[15px] text-ink-200">
               <span>Quick question first?</span>
-              <AskAILink chip={askChip}>Ask our AI assistant</AskAILink>
+              <AskAILink>Ask our AI assistant</AskAILink>
             </p>
           </div>
         </Reveal>

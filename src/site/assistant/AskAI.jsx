@@ -3,8 +3,8 @@ import { cn } from '../lib/cn';
 import { Button } from '../ui/Button';
 import { preloadAssistant, useAssistant } from './assistantStore';
 
-/** Pill button that opens the assistant, optionally asking a suggested question (`chip`) or free text (`ask`). */
-export function AskAIButton({ chip, ask, children = 'Ask our AI assistant', variant = 'secondary', size = 'md', className, onBeforeOpen }) {
+/** Pill button that opens the live chat. */
+export function AskAIButton({ children = 'Ask our AI assistant', variant = 'secondary', size = 'md', className, onBeforeOpen }) {
   const { open } = useAssistant();
   return (
     <Button
@@ -17,7 +17,7 @@ export function AskAIButton({ chip, ask, children = 'Ask our AI assistant', vari
       onFocus={preloadAssistant}
       onClick={() => {
         onBeforeOpen?.();
-        open({ chip, ask });
+        open();
       }}
       leading={<SparkleIcon weight="fill" className={cn('size-4', variant === 'primary' ? 'text-ink-950' : 'text-sage-300')} aria-hidden="true" />}
       className={className}
@@ -27,8 +27,8 @@ export function AskAIButton({ chip, ask, children = 'Ask our AI assistant', vari
   );
 }
 
-/** Inline text link that opens the assistant. */
-export function AskAILink({ chip, ask, children = 'Ask our AI assistant', className }) {
+/** Inline text link that opens the live chat. */
+export function AskAILink({ children = 'Ask our AI assistant', className }) {
   const { open } = useAssistant();
   return (
     <button
@@ -36,7 +36,7 @@ export function AskAILink({ chip, ask, children = 'Ask our AI assistant', classN
       aria-haspopup="dialog"
       onPointerEnter={preloadAssistant}
       onFocus={preloadAssistant}
-      onClick={() => open({ chip, ask })}
+      onClick={() => open()}
       className={cn(
         'group/ai inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-sage-300 transition-colors hover:text-sage-200',
         className,

@@ -22,7 +22,6 @@ export default function AboutPage() {
       <ProductsSection />
       <TeamSection />
       <CtaBand
-        askChip="team"
         eyebrow={CTA.eyebrow}
         title={CTA.title}
         description={CTA.description}

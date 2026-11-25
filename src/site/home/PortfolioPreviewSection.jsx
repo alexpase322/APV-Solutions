@@ -56,7 +56,7 @@ export default function PortfolioPreviewSection() {
                 <TextLink to="/portfolio" className="min-h-11">
                   View the full portfolio
                 </TextLink>
-                <AskAILink chip="portfolio">Ask AI about our products</AskAILink>
+                <AskAILink>Ask AI about our products</AskAILink>
                 <span className="nums hidden font-mono text-[11px] uppercase tracking-[0.2em] text-ink-200 sm:inline">
                   {pad(SLIDES.length)} products
                 </span>

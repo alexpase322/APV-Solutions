@@ -52,7 +52,7 @@ function AutomationCopy({ titleId }) {
         <TextLink to={AUTOMATION.link.to} className="min-h-11">
           {AUTOMATION.link.label}
         </TextLink>
-        <AskAILink chip="automation">Ask AI about automation</AskAILink>
+        <AskAILink>Ask AI about automation</AskAILink>
       </Reveal>
       <div className="mt-10 border-t border-white/[0.06] pt-8">
         <p className={cn(MONO_LABEL, 'mb-5')}>Tools we automate with</p>

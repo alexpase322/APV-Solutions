@@ -29,7 +29,6 @@ export default function ServicesPage() {
       </div>
       <Toolbelt />
       <CtaBand
-        askChip="pricing"
         title={CTA.title}
         description={CTA.description}
         actions={

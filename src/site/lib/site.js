@@ -190,3 +190,9 @@ export const TEAM = [
 ];
 
 export const NFC_AUDIENCES = ['Realtors', 'Sales teams', 'Small business owners', 'Freelancers & consultants'];
+
+/** Live chat widget (Chatwoot, hosted on our APVNexus instance). The website token is public by design. */
+export const CHAT = {
+  baseUrl: 'https://chat.apvnexus.com',
+  websiteToken: 'vTkUJwGhDijxdBpaSFKgxXkt',
+};

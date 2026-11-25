@@ -75,7 +75,7 @@ function BiCopy({ titleId }) {
         <TextLink to={CONTACT_PATH} className="min-h-11">
           Talk to our Power BI specialist
         </TextLink>
-        <AskAILink chip="bi">Ask AI about dashboards</AskAILink>
+        <AskAILink>Ask AI about dashboards</AskAILink>
       </Reveal>
     </>
   );

@@ -9,6 +9,7 @@ import { APP_LINKS, CONTACT_PATH, NAV_LINKS, SITE } from '../lib/site';
 import { Button } from '../ui/Button';
 import { Logo } from '../ui/Logo';
 import { preloadAssistant, useAssistant } from '../assistant/assistantStore';
+import { setChatSuppressed } from '../assistant/chat';
 
 /** Floating header: transparent at the top, frosted glass once the page scrolls. */
 export default function Navbar() {
@@ -39,10 +40,11 @@ export default function Navbar() {
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
-  // Open menu: lock scroll, make the page inert, Escape closes
+  // Open menu: lock scroll, hide the chat bubble, make the page inert, Escape closes
   useEffect(() => {
     if (!menuOpen) return undefined;
     lenis?.stop();
+    setChatSuppressed('menu', true);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const background = [document.getElementById('main'), document.querySelector('footer')].filter(Boolean);
@@ -56,6 +58,7 @@ export default function Navbar() {
     window.addEventListener('keydown', onKeyDown);
     return () => {
       lenis?.start();
+      setChatSuppressed('menu', false);
       document.body.style.overflow = previousOverflow;
       background.forEach((el) => el.removeAttribute('inert'));
       window.removeEventListener('keydown', onKeyDown);

@@ -61,7 +61,7 @@ function FaqContact() {
           <span className="sr-only">{' (opens in a new tab)'}</span>
         </TextLink>
         <div>
-          <AskAILink chip="nfc">Or ask our AI assistant</AskAILink>
+          <AskAILink>Or ask our AI assistant</AskAILink>
         </div>
       </div>
     </div>
